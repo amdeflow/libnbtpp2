@@ -1,0 +1,30 @@
+image: base/devel
+
+build:
+  stage: build
+  before_script:
+    - pacman -Sy ninja cmake boost --noconfirm
+  script: 
+    - mkdir build
+    - cd build
+    - cmake .. -G Ninja
+    - ninja
+  artifacts:
+    paths:
+      - build/tests
+      - build/libnbtpp2.a
+test:
+  stage: test
+  script:
+    - cp assets/bigtest.nbt .
+    - ./build/tests
+pages:
+  script:
+    - pacman -Sy doxygen graphviz --noconfirm
+    - doxygen
+    - mv doc-build/html/ public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
