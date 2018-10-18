@@ -116,7 +116,7 @@ public:
      * @brief Get the root TAG_Compound of the NbtFile
      * @return Toot TAG_Compound of the NbtFile
      */
-    std::map<std::string, Tag*> &get_root();
+    std::map<std::string, Tag *> &get_root();
 
     /**
      * @param compression Compression to set the NbtFile's compression to
