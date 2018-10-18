@@ -111,8 +111,8 @@ NbtFile::NbtFile(std::string root_name)
     : root{std::make_shared<tags::TagCompound>(tags::TagCompound({}))}, root_name{""}
 {}
 
-tags::TagCompound &NbtFile::get_root()
-{ return *root; }
+std::map<std::string, Tag*> &NbtFile::get_root()
+{ return root->value; }
 
 bool NbtFile::set_write_compression(Compression compression)
 {

@@ -17,4 +17,5 @@ target_link_libraries(tests nbtpp2)
 file(COPY assets/bigtest.nbt DESTINATION ${CMAKE_BINARY_DIR})
 
 install(TARGETS nbtpp2 DESTINATION lib)
+export(PACKAGE nbtpp2)
 install(DIRECTORY include/nbtpp2 DESTINATION include)
