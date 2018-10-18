@@ -12,7 +12,7 @@ build:
   artifacts:
     paths:
       - build/tests
-      - build/libnbtpp2.a
+      - build/libnbtpp2.so
 test:
   stage: test
   script:
