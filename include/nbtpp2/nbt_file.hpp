@@ -113,8 +113,8 @@ public:
     void write(const std::string &path, nbtpp2::Endianness endianness, Compression compression = Compression::Detect);
 
     /**
-     * @brief Get the root TAG_Compound of the NbtFile
-     * @return Toot TAG_Compound of the NbtFile
+     * @brief Get the root TAG_Compound contents of the NbtFile
+     * @return Root TAG_Compound contents of the NbtFile
      */
     std::map<std::string, Tag *> &get_root();
 
