@@ -20,6 +20,8 @@ namespace nbtpp2
 template<typename A, typename B>
 union Convert
 {
+    static_assert(sizeof(A) == sizeof(B), "A and B must have the same size");
+
     A a;
     B b;
 };
@@ -75,6 +77,8 @@ auto optional_reverse_uint(UintT value, Endianness target_endianness)
 template<typename NumberT, typename NumberTUnsigned>
 void write_number(NumberT value, std::ostream &out, Endianness endianness)
 {
+    static_assert(sizeof(NumberT) == sizeof(NumberTUnsigned), "NumberT and NumberTUnsigned must have the same size");
+
     out.write(
         ConvertToChar<NumberTUnsigned>{
             optional_reverse_uint(Convert<NumberT, NumberTUnsigned>{value}.b, endianness)
@@ -102,6 +106,8 @@ void write_string(const std::string &str, std::ostream &out, Endianness endianne
 template<typename NumberT, typename NumberTUnsigned>
 auto read_number(std::istream &in, Endianness endianness)
 {
+    static_assert(sizeof(NumberT) == sizeof(NumberTUnsigned), "NumberT and NumberTUnsigned must have the same size");
+
     auto converter = ConvertToChar<NumberTUnsigned>{0};
     in.read(converter.chars, sizeof(NumberTUnsigned));
     auto result = Convert<NumberTUnsigned, NumberT>{

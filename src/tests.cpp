@@ -17,6 +17,8 @@
 
 template <typename T, typename TUnsigned>
 void as_bytes(const T * input, std::size_t in_size, std::vector<char> &output, nbtpp2::Endianness endianness) {
+    static_assert(sizeof(T) == sizeof(TUnsigned), "T and TUnsigned must have the same size");
+
     for (auto i = 0; i < in_size; ++i) {
         for (auto &c: nbtpp2::ConvertToChar<TUnsigned>{
             nbtpp2::optional_reverse_uint(nbtpp2::Convert<T, TUnsigned>{
@@ -32,6 +34,8 @@ void as_bytes(const T * input, std::size_t in_size, std::vector<char> &output, n
 template<typename T, typename TUnsigned>
 void as_bytes(std::vector<T> input, std::vector<char> &output, nbtpp2::Endianness endianness)
 {
+    static_assert(sizeof(T) == sizeof(TUnsigned), "T and TUnsigned must have the same size");
+
     as_bytes<T, TUnsigned>(input.data(), input.size(), output, endianness);
 }
 
@@ -127,6 +131,7 @@ auto random_string(std::vector<std::pair<char, char>> constraints, std::size_t l
 template<typename T, typename TUnsigned, TUnsigned t_unsigned_max>
 auto random_t_array(std::size_t len, TUnsigned minimum)
 {
+    static_assert(sizeof(T) == sizeof(TUnsigned), "T and TUnsigned must have the same size");
     auto out = std::vector<T>();
 
     std::random_device generator;
