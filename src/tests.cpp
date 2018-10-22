@@ -16,11 +16,11 @@
 #include "nbtpp2/nbt_file.hpp"
 
 template <typename T, typename TUnsigned>
-void as_bytes(const T * in, std::size_t in_size, std::vector<char> &output, nbtpp2::Endianness endianness) {
+void as_bytes(const T * input, std::size_t in_size, std::vector<char> &output, nbtpp2::Endianness endianness) {
     for (auto i = 0; i < in_size; ++i) {
         for (auto &c: nbtpp2::ConvertToChar<TUnsigned>{
             nbtpp2::optional_reverse_uint(nbtpp2::Convert<T, TUnsigned>{
-                    in[i]
+                    input[i]
                 }.b, endianness
             )
         }.chars) {
@@ -30,9 +30,9 @@ void as_bytes(const T * in, std::size_t in_size, std::vector<char> &output, nbtp
 }
 
 template<typename T, typename TUnsigned>
-void as_bytes(std::vector<T> vector, std::vector<char> &output, nbtpp2::Endianness endianness)
+void as_bytes(std::vector<T> input, std::vector<char> &output, nbtpp2::Endianness endianness)
 {
-    as_bytes<T, TUnsigned>(vector.data(), vector.size(), output, endianness);
+    as_bytes<T, TUnsigned>(input.data(), input.size(), output, endianness);
 }
 
 struct membuf: std::streambuf
