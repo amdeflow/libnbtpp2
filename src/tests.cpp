@@ -231,12 +231,6 @@ TEST_CASE("TAG_Compound", "[tag_compound]")
         ["byteArrayTest (the first 1000 values of (n*n*255+n*7)%100, starting with n=0 (0, 62, 34, 16, 8, ...))"]
             ->as<nbtpp2::tags::TagByteArray>().value.size() == 1000);
 
-        std::cout << f.get_root()["nested compound test"]
-            ->as<nbtpp2::tags::TagCompound>().value["egg"]
-            ->as<nbtpp2::tags::TagCompound>().value["name"]
-            ->as<nbtpp2::tags::TagString>().value
-            << std::endl;
-
         f.write("bigtest_out.nbt", Endianness::Big);
     }
 }
