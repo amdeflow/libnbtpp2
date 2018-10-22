@@ -15,19 +15,24 @@
 #include "nbtpp2/tags/tag_long_array.hpp"
 #include "nbtpp2/nbt_file.hpp"
 
-template<typename T, typename TUnsigned>
-void as_bytes(std::vector<T> vector, std::vector<char> &output, nbtpp2::Endianness endianness)
-{
-    for (auto &elem: vector) {
+template <typename T, typename TUnsigned>
+void as_bytes(const T * in, std::size_t in_size, std::vector<char> &output, nbtpp2::Endianness endianness) {
+    for (auto i = 0; i < in_size; ++i) {
         for (auto &c: nbtpp2::ConvertToChar<TUnsigned>{
             nbtpp2::optional_reverse_uint(nbtpp2::Convert<T, TUnsigned>{
-                    elem
+                    in[i]
                 }.b, endianness
             )
         }.chars) {
             output.push_back(c);
         }
     }
+}
+
+template<typename T, typename TUnsigned>
+void as_bytes(std::vector<T> vector, std::vector<char> &output, nbtpp2::Endianness endianness)
+{
+    as_bytes<T, TUnsigned>(vector.data(), vector.size(), output, endianness);
 }
 
 struct membuf: std::streambuf
@@ -119,19 +124,6 @@ auto random_string(std::vector<std::pair<char, char>> constraints, std::size_t l
     return out;
 }
 
-TEST_CASE("TAG_String", "[tag_string]")
-{
-    GIVEN("A random string of numbers and letters with the length of 257") {
-        std::uint8_t contents[] = {0x01, 0x01};
-        auto random_str = random_string({{'0', '9'}, {'A', 'Z'}, {'a', 'z'}}, 257);
-        auto buf = std::istringstream(std::string(reinterpret_cast<char *>(contents)) + random_str);
-
-        auto t = nbtpp2::tags::TagString::read(buf, nbtpp2::Endianness::Little);
-        REQUIRE(t->value == random_str);
-        delete t;
-    }
-}
-
 template<typename T, typename TUnsigned, TUnsigned t_unsigned_max>
 auto random_t_array(std::size_t len, TUnsigned minimum)
 {
@@ -147,6 +139,21 @@ auto random_t_array(std::size_t len, TUnsigned minimum)
     return out;
 }
 
+TEST_CASE("TAG_String", "[tag_string]")
+{
+    GIVEN("A random string of numbers and letters with the length of 257") {
+        auto random_str = random_string({{'0', '9'}, {'A', 'Z'}, {'a', 'z'}}, 1024);
+        auto random_array_bytes = std::vector<char>{0x04, 0x00};
+        as_bytes<char, std::uint8_t>(random_str.data(), random_str.size(), random_array_bytes, nbtpp2::Endianness::Big);
+        auto buf = membuf(random_array_bytes.data(), random_array_bytes.data() + random_array_bytes.size());
+        std::istream stream{&buf};
+
+        auto t = nbtpp2::tags::TagString::read(stream, nbtpp2::Endianness::Big);
+        REQUIRE(t->value == random_str);
+        delete t;
+    }
+}
+
 TEST_CASE("TAG_Byte_Array", "[tag_byte_array]")
 {
     GIVEN("A random array of bytes with the length of 1024") {
@@ -154,7 +161,7 @@ TEST_CASE("TAG_Byte_Array", "[tag_byte_array]")
         auto random_array_bytes = std::vector<char>{0x00, 0x00, 0x04, 0x00};
         as_bytes<std::int8_t, std::uint8_t>(random_array, random_array_bytes, nbtpp2::Endianness::Big);
         auto buf = membuf(random_array_bytes.data(), random_array_bytes.data() + random_array_bytes.size());
-        std::istream stream(&buf);
+        std::istream stream{&buf};
 
         auto t = nbtpp2::tags::TagByteArray::read(stream, nbtpp2::Endianness::Big);
         REQUIRE(t->value == random_array);
@@ -223,6 +230,12 @@ TEST_CASE("TAG_Compound", "[tag_compound]")
         REQUIRE(f.get_root()
         ["byteArrayTest (the first 1000 values of (n*n*255+n*7)%100, starting with n=0 (0, 62, 34, 16, 8, ...))"]
             ->as<nbtpp2::tags::TagByteArray>().value.size() == 1000);
+
+        std::cout << f.get_root()["nested compound test"]
+            ->as<nbtpp2::tags::TagCompound>().value["egg"]
+            ->as<nbtpp2::tags::TagCompound>().value["name"]
+            ->as<nbtpp2::tags::TagString>().value
+            << std::endl;
 
         f.write("bigtest_out.nbt", Endianness::Big);
     }
