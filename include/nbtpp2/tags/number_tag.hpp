@@ -14,6 +14,7 @@ namespace tags
 template<typename NumberT, typename NumberTUnsigned>
 class NumberTag: public Tag
 {
+    static_assert(sizeof(NumberT) == sizeof(NumberTUnsigned), "NumberT and NumberTUnsigned must have the same size");
 public:
     NumberT value = 0;
 

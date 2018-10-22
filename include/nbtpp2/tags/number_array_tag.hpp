@@ -23,6 +23,8 @@ namespace tags
 template<typename NumberT, typename NumberTUnsigned>
 class NumberArrayTag: public Tag
 {
+    static_assert(sizeof(NumberT) == sizeof(NumberTUnsigned), "NumberT and NumberTUnsigned must have the same size");
+
     using ValT = std::vector<NumberT>;
 public:
     ValT value;
