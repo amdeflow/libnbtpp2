@@ -6,6 +6,7 @@
 #include "nbtpp2/util.hpp"
 
 #include <map>
+#include <vector>
 
 namespace nbtpp2
 {
@@ -43,6 +44,29 @@ public:
         for (auto &it: value) {
             delete it.second;
         }
+    }
+
+    /**
+     * @brief Traverse TagCompound to find element quickly
+     * @param path_parts names of TagCompounds you want to traverse (last part is the tag you want as the result)
+     * @return The found tag
+     */
+    Tag *traverse(std::vector<std::string> path_parts)
+    {
+        if (!path_parts.empty()) {
+            if (path_parts.size() == 1) {
+                return value[path_parts[0]];
+            }
+            else if (value[path_parts[0]]->identify() == TagType::TagCompound) {
+                return value[path_parts[0]]->as<TagCompound>().traverse(
+                    std::vector<std::string>{
+                        path_parts.begin() + 1,
+                        path_parts.end()
+                    }
+                );
+            }
+        }
+        return nullptr;
     }
 };
 

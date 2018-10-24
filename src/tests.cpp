@@ -236,6 +236,8 @@ TEST_CASE("TAG_Compound", "[tag_compound]")
         ["byteArrayTest (the first 1000 values of (n*n*255+n*7)%100, starting with n=0 (0, 62, 34, 16, 8, ...))"]
             ->as<nbtpp2::tags::TagByteArray>().value.size() == 1000);
 
+        REQUIRE(t.traverse({"Bye, World!", "test"})->as<tags::TagList>().value[0]->as<tags::TagByte>().value == 'a');
+
         f.write("bigtest_out.nbt", Endianness::Big);
     }
 }
