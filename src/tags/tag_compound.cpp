@@ -35,6 +35,24 @@ TagCompound *TagCompound::read(std::istream &in, Endianness endianness)
     return new TagCompound(value);
 }
 
+Tag *TagCompound::traverse(std::vector<std::string> path_parts)
+{
+    if (!path_parts.empty()) {
+        if (path_parts.size() == 1) {
+            return value[path_parts[0]];
+        }
+        else if (value[path_parts[0]]->identify() == TagType::TagCompound) {
+            return value[path_parts[0]]->as<TagCompound>().traverse(
+                std::vector<std::string>{
+                    path_parts.begin() + 1,
+                    path_parts.end()
+                }
+            );
+        }
+    }
+    return nullptr;
+}
+
 }
 
 }
