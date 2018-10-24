@@ -47,7 +47,7 @@ public:
     }
 
     /**
-     * @brief Traverse TagCompound to find element quickly
+     * @brief Traverse TagCompound to find tag quickly
      * @param path_parts names of TagCompounds you want to traverse (last part is the tag you want as the result)
      * @return The found tag
      */

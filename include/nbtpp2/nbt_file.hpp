@@ -119,6 +119,13 @@ public:
     std::map<std::string, Tag *> &get_root();
 
     /**
+     * @brief Traverse the root TagCompound to find tag quickly (calls {@link nbtpp2::tags::TagCompound::traverse})
+     * @param path_parts names of TagCompounds you want to traverse (last part is the tag you want as the result)
+     * @return The found tag
+     */
+    Tag *traverse(std::vector<std::string> path_parts);
+
+    /**
      * @param compression Compression to set the NbtFile's compression to
      * @return Success
      * @note Compression must not be Compression::Detect. The function will not set {@link write_compression} and return false.

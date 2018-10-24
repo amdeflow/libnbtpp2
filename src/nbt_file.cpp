@@ -114,6 +114,9 @@ NbtFile::NbtFile(std::string root_name)
 std::map<std::string, Tag *> &NbtFile::get_root()
 { return root->value; }
 
+Tag *NbtFile::traverse(std::vector<std::string> path_parts)
+{ return root->traverse(std::move(path_parts)); }
+
 bool NbtFile::set_write_compression(Compression compression)
 {
     if (compression == Compression::Detect) return false;
