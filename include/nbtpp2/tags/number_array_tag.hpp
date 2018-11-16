@@ -45,7 +45,7 @@ public:
     void write(std::ostream &out, Endianness endianness) override
     {
         write_number<std::int32_t, std::uint32_t>(static_cast<std::int32_t>(value.size()), out, endianness);
-        for (auto &elem: value) {
+        for (auto &elem : value) {
             out.write(ConvertToChar<NumberT>{elem}.chars, sizeof(NumberT));
         }
     }

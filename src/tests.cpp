@@ -20,7 +20,7 @@ void as_bytes(const T * input, std::size_t in_size, std::vector<char> &output, n
     static_assert(sizeof(T) == sizeof(TUnsigned), "T and TUnsigned must have the same size");
 
     for (auto i = 0; i < in_size; ++i) {
-        for (auto &c: nbtpp2::ConvertToChar<TUnsigned>{
+        for (auto &c : nbtpp2::ConvertToChar<TUnsigned>{
             nbtpp2::optional_reverse_uint(nbtpp2::Convert<T, TUnsigned>{
                     input[i]
                 }.b, endianness
@@ -192,7 +192,7 @@ TEST_CASE("TAG_List", "[tag_list]")
             bytes.push_back(convert.chars[1]);
         };
         auto short_array = std::vector<std::int16_t>{501, 930, -6860, -2200};
-        for (auto &s: short_array) { push_short(s); }
+        for (auto &s : short_array) { push_short(s); }
 
         auto buf = membuf(bytes.data(), bytes.data() + bytes.size());
         std::istream stream(&buf);
@@ -202,7 +202,7 @@ TEST_CASE("TAG_List", "[tag_list]")
         auto same = [&]()
         {
             auto i = std::size_t(0);
-            for (auto &elem: t->value) {
+            for (auto &elem : t->value) {
                 if (elem->as<nbtpp2::tags::TagShort>().value != short_array[i])return false;
                 ++i;
             }

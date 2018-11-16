@@ -41,7 +41,7 @@ public:
     /// @brief Custom destructor for deleting Tags in {@link value}
     ~TagCompound() override
     {
-        for (auto &it: value) {
+        for (auto &it : value) {
             delete it.second;
         }
     }
