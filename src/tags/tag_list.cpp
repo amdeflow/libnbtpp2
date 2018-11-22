@@ -10,7 +10,7 @@ TagList::TagList(ValT value)
     : Tag{TagType::TagList}, value{std::move(value)}
 {
     auto expected_tag_type = value.empty() ? TagType::TagEnd : value[0]->identify();
-    for (auto &item: value) {
+    for (auto &item : value) {
         if (item->identify() != expected_tag_type)
             throw std::runtime_error("TAG_List can only contain homogeneous tag types");
     }

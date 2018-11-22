@@ -15,7 +15,7 @@ TagCompound::TagCompound(ValT value)
 
 void TagCompound::write(std::ostream &out, Endianness endianness)
 {
-    for (auto &it: value) {
+    for (auto &it : value) {
         write_tag_id(it.second->identify(), out);
         write_string(it.first, out, endianness);
         it.second->write(out, endianness);

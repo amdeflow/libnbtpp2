@@ -39,7 +39,7 @@ public:
     /// @brief Custom destructor to delete tags in {@link value}
     ~TagList() override
     {
-        for (auto &it: value) {
+        for (auto &it : value) {
             delete it;
         }
     }
