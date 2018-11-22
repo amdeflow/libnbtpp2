@@ -50,7 +50,7 @@ Tag *TagCompound::traverse(std::vector<std::string> path_parts)
             );
         }
     }
-    return nullptr;
+    return this;
 }
 
 }
