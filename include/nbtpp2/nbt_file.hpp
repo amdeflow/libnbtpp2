@@ -119,6 +119,13 @@ public:
     std::map<std::string, Tag *> &get_root();
 
     /**
+     * @brief Get the root TAG_Compound of the NbtFile
+     * @return Root TAG_Compound contents of the NbtFile
+     * @note You should probably use {@link get_root()}
+     */
+    tags::TagCompound &get_root_tag();
+
+    /**
      * @brief Traverse the root TagCompound to find tag quickly (calls {@link nbtpp2::tags::TagCompound::traverse})
      * @param path_parts names of TagCompounds you want to traverse (last part is the tag you want as the result)
      * @return The found tag
