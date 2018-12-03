@@ -56,7 +56,7 @@ void write_number(NumberT value, std::ostream &out, Endianness endianness)
     static_assert(sizeof(NumberT) == sizeof(NumberTUnsigned), "NumberT and NumberTUnsigned must have the same size");
 
     out.write(
-        ConvertToChar<NumberTUnsigned>{
+        ConvertToChars<NumberTUnsigned>{
             optional_reverse_uint(Convert<NumberT, NumberTUnsigned>{value}.b, endianness)
         }.chars,
         sizeof(NumberTUnsigned)
@@ -84,7 +84,7 @@ auto read_number(std::istream &in, Endianness endianness)
 {
     static_assert(sizeof(NumberT) == sizeof(NumberTUnsigned), "NumberT and NumberTUnsigned must have the same size");
 
-    auto converter = ConvertToChar<NumberTUnsigned>{0};
+    auto converter = ConvertToChars<NumberTUnsigned>{0};
     in.read(converter.chars, sizeof(NumberTUnsigned));
     auto result = Convert<NumberTUnsigned, NumberT>{
         optional_reverse_uint(

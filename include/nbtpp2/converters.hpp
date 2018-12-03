@@ -23,7 +23,7 @@ union Convert
  * @tparam IntT Integer type converted to/from
  */
 template<typename IntT>
-union ConvertToChar
+union ConvertToChars
 {
     IntT int_type;
     char chars[sizeof(IntT)];

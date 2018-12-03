@@ -20,7 +20,7 @@ void as_bytes(const T * input, std::size_t in_size, std::vector<char> &output, n
     static_assert(sizeof(T) == sizeof(TUnsigned), "T and TUnsigned must have the same size");
 
     for (auto i = 0; i < in_size; ++i) {
-        for (auto &c : nbtpp2::ConvertToChar<TUnsigned>{
+        for (auto &c : nbtpp2::ConvertToChars<TUnsigned>{
             nbtpp2::optional_reverse_uint(nbtpp2::Convert<T, TUnsigned>{
                     input[i]
                 }.b, endianness
@@ -180,7 +180,7 @@ TEST_CASE("TAG_List", "[tag_list]")
         auto bytes = std::vector<char>{static_cast<char>(nbtpp2::TagType::TagShort), 0x00, 0x00, 0x00, 0x04};
         auto push_short = [&](std::int16_t val)
         {
-            auto convert = nbtpp2::ConvertToChar<std::uint16_t>{
+            auto convert = nbtpp2::ConvertToChars<std::uint16_t>{
                 nbtpp2::optional_reverse_uint<std::uint16_t>(
                     nbtpp2::Convert<std::int16_t, std::uint16_t>{
                         val

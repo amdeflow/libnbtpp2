@@ -46,7 +46,7 @@ public:
     {
         write_number<std::int32_t, std::uint32_t>(static_cast<std::int32_t>(value.size()), out, endianness);
         for (auto &elem : value) {
-            out.write(ConvertToChar<NumberT>{elem}.chars, sizeof(NumberT));
+            out.write(ConvertToChars<NumberT>{elem}.chars, sizeof(NumberT));
         }
     }
 
