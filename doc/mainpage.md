@@ -16,4 +16,4 @@ int main() {
               << std::endl;
 }
 ```
-Download [bigtest.nbt](https://gitlab.com/rutgerbrf/libnbtpp2/raw/702681a21fdf627c1ff0bc85cee466e11d76b2a3/assets/bigtest.nbt)
+Download [bigtest.nbt](https://gitlab.com/rutgerbrf/libnbtpp2/raw/master/assets/bigtest.nbt)
