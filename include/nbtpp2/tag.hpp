@@ -49,6 +49,7 @@ public:
      * @brief Shorthand for casting tag to desired tag type
      * @tparam TagT Tag type to cast to
      * @return Tag as TagT&
+     * @throws std::runtime_error If the tag cannot be cast to TagT
      */
     template<typename TagT>
     auto &as()
