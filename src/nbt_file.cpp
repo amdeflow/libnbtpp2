@@ -108,7 +108,7 @@ NbtFile::NbtFile(std::shared_ptr<tags::TagCompound> root, std::string root_name)
 {}
 
 NbtFile::NbtFile(std::string root_name)
-    : root{std::make_shared<tags::TagCompound>(tags::TagCompound({}))}, root_name{""}
+    : root{std::make_shared<tags::TagCompound>(tags::TagCompound({}))}, root_name{std::move(root_name)}
 {}
 
 std::map<std::string, Tag *> &NbtFile::get_root()

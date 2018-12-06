@@ -21,7 +21,7 @@ enum class Endianness
  * @var SYSTEM_ENDIANNESS
  * @brief Calculates system endianness statically
  */
-const auto SYSTEM_ENDIANNESS = static_cast<Endianness>( // NOLINT(cert-err58-cpp)
+const auto SYSTEM_ENDIANNESS = static_cast<Endianness>(
     ConvertToChars<std::uint16_t>{
         std::uint16_t{0x0001}
     }.chars[0]
