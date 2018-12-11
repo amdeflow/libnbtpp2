@@ -19,7 +19,7 @@ template <typename T, typename TUnsigned>
 void as_bytes(const T * input, std::size_t in_size, std::vector<char> &output, nbtpp2::Endianness endianness) {
     static_assert(sizeof(T) == sizeof(TUnsigned), "T and TUnsigned must have the same size");
 
-    for (auto i = 0; i < in_size; ++i) {
+    for (std::size_t i = 0; i < in_size; ++i) {
         for (auto &c : nbtpp2::ConvertToChars<TUnsigned>{
             nbtpp2::optional_reverse_uint(nbtpp2::Convert<T, TUnsigned>{
                     input[i]

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 project(nbtpp2 VERSION 1.0.0 DESCRIPTION "A C++14 library for creating, opening and modifying NBT files" LANGUAGES CXX)
 
+option(NBTPP2_BUILD_TESTS "NBTPP2_BUILD_TESTS" OFF)
+
 set(CMAKE_CXX_STANDARD 14)
 set(Boost_USE_STATIC_LIBS ON)
 
@@ -51,10 +53,13 @@ set(nbtpp2_SRC
         )
 
 add_library(nbtpp2 SHARED ${nbtpp2_SRC})
-add_executable(tests src/tests.cpp)
 target_include_directories(nbtpp2 PUBLIC include)
 target_link_libraries(nbtpp2 PRIVATE Boost::iostreams ZLIB::ZLIB)
-target_link_libraries(tests nbtpp2)
+
+if (${NBTPP2_BUILD_TESTS})
+    add_executable(tests src/tests.cpp)
+    target_link_libraries(tests nbtpp2)
+endif()
 
 # Copy bigtest.nbt for the tests
 file(COPY assets/bigtest.nbt DESTINATION ${CMAKE_BINARY_DIR})
