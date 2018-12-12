@@ -52,6 +52,15 @@ set(nbtpp2_SRC
         include/nbtpp2/converters.hpp
         )
 
+option(NBTPP2_BUILD_STATIC "Build nbtpp2 as a static library" OFF)
+
+if (NBTPP2_BUILD_STATIC)
+    add_definitions(-DNBTPP2_STATIC_BUILD)
+    add_library(${PROJECT_NAME} STATIC ${nbtpp2_SRC})
+else (NBTPP2_BUILD_STATIC)
+    add_library(${PROJECT_NAME} SHARED ${nbtpp2_SRC})
+endif (NBTPP2_BUILD_STATIC)
+
 add_library(nbtpp2 SHARED ${nbtpp2_SRC})
 target_include_directories(nbtpp2 PUBLIC include)
 target_link_libraries(nbtpp2 PRIVATE Boost::iostreams ZLIB::ZLIB)
