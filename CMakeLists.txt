@@ -61,7 +61,6 @@ else (NBTPP2_BUILD_STATIC)
     add_library(${PROJECT_NAME} SHARED ${nbtpp2_SRC})
 endif (NBTPP2_BUILD_STATIC)
 
-add_library(nbtpp2 SHARED ${nbtpp2_SRC})
 target_include_directories(nbtpp2 PUBLIC include)
 target_link_libraries(nbtpp2 PRIVATE Boost::iostreams ZLIB::ZLIB)
 
