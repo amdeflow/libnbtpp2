@@ -1,7 +1,6 @@
 #ifndef NBTPP2_TAG_DEF_HPP
 #define NBTPP2_TAG_DEF_HPP
 
-#include <memory>
 #include "tag.hpp"
 
 namespace nbtpp2

@@ -1,6 +1,7 @@
 #include <utility>
 #include <nbtpp2/nbt_file.hpp>
-
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
 
 #include "nbtpp2/nbt_file.hpp"
 

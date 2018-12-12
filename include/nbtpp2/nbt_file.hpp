@@ -3,9 +3,8 @@
 
 #include "nbtpp2/tags/tag_compound.hpp"
 
-#include <boost/iostreams/filtering_stream.hpp>
-#include <boost/iostreams/filter/gzip.hpp>
 #include <fstream>
+#include <memory>
 
 /// @brief The namespace where all nbtpp2 functions and classes are located
 namespace nbtpp2

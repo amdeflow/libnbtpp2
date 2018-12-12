@@ -2,7 +2,6 @@
 #define NBTPP2_UTIL_HPP
 
 #include <cstdint>
-
 #include <ostream>
 #include <istream>
 #include <string>
