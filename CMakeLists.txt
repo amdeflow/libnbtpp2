@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.12)
 project(nbtpp2 VERSION 1.0.0 DESCRIPTION "A C++14 library for creating, opening and modifying NBT files" LANGUAGES CXX)
 
 option(NBTPP2_BUILD_TESTS "Build nbtpp2 tests" OFF)
-option(NBTPP2_BUILD_STATIC "Build nbtpp2 as a static library" OFF)
 
 set(CMAKE_CXX_STANDARD 14)
 set(Boost_USE_STATIC_LIBS ON)
