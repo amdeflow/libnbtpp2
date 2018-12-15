@@ -1,9 +1,10 @@
 #ifndef NBTPP2_INT_TAG_HPP
 #define NBTPP2_INT_TAG_HPP
 
-#include <iostream>
 #include "nbtpp2/tag.hpp"
 #include "nbtpp2/util.hpp"
+
+#include <iostream>
 
 namespace nbtpp2
 {

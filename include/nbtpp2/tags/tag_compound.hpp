@@ -2,8 +2,6 @@
 #define NBTPP2_TAG_COMPOUND_HPP
 
 #include "nbtpp2/tag.hpp"
-#include "nbtpp2/read_tag.hpp"
-#include "nbtpp2/util.hpp"
 
 #include <map>
 #include <vector>

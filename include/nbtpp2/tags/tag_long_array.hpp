@@ -1,8 +1,6 @@
 #ifndef NBTPP2_TAG_LONG_ARRAY_HPP
 #define NBTPP2_TAG_LONG_ARRAY_HPP
 
-#include <cstdint>
-
 #include "nbtpp2/endianness.hpp"
 #include "number_array_tag.hpp"
 

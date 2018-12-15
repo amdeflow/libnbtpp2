@@ -1,7 +1,9 @@
-#include <utility>
-
-#include <iostream>
+#include "nbtpp2/read_tag.hpp"
+#include "nbtpp2/util.hpp"
 #include "nbtpp2/tags/tag_compound.hpp"
+
+#include <utility>
+#include <iostream>
 
 namespace nbtpp2
 {

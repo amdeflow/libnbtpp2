@@ -1,13 +1,15 @@
 #ifndef NBTPP2_UTIL_HPP
 #define NBTPP2_UTIL_HPP
 
+#include "converters.hpp"
+#include "endianness.hpp"
+#include "tag_type.hpp"
+#include "tag.hpp"
+
 #include <cstdint>
 #include <ostream>
 #include <istream>
 #include <string>
-#include "converters.hpp"
-#include "endianness.hpp"
-#include "tag_type.hpp"
 
 namespace nbtpp2
 {
@@ -116,6 +118,15 @@ void write_tag_id(TagType type, std::ostream &out);
  * @return Tag id (TagType)
  */
 TagType read_tag_id(std::istream &in);
+
+/**
+ * @brief Read a tag
+ * @param type Tag type (tag id) of the tag to read
+ * @param in istream to read the tag from
+ * @param endianness Endianness to read the tag in
+ * @return Resulting tag as Tag *
+ */
+Tag *read_tag(TagType type, std::istream &in, Endianness endianness);
 
 }
 

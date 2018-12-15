@@ -1,4 +1,6 @@
 #include "nbtpp2/tags/tag_list.hpp"
+#include "nbtpp2/read_tag.hpp"
+#include "nbtpp2/util.hpp"
 
 namespace nbtpp2
 {

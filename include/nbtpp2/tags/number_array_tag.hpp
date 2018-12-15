@@ -2,12 +2,11 @@
 #define NBTPP2_ARRAY_TAG_HPP
 
 #include "nbtpp2/tag.hpp"
+#include "nbtpp2/util.hpp"
 
 #include <functional>
 #include <iostream>
 #include <vector>
-#include "nbtpp2/tag.hpp"
-#include "nbtpp2/util.hpp"
 
 namespace nbtpp2
 {

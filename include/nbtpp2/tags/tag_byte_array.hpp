@@ -1,12 +1,6 @@
-#include <utility>
-
 #ifndef NBTPP2_TAG_BYTE_ARRAY_HPP
 #define NBTPP2_TAG_BYTE_ARRAY_HPP
 
-
-#include <vector>
-#include "nbtpp2/tag.hpp"
-#include "nbtpp2/util.hpp"
 #include "number_array_tag.hpp"
 
 namespace nbtpp2

@@ -1,11 +1,7 @@
 #ifndef NBTPP2_TAG_INT_HPP
 #define NBTPP2_TAG_INT_HPP
 
-#include <cstdint>
-
 #include "number_tag.hpp"
-#include "nbtpp2/endianness.hpp"
-#include "nbtpp2/util.hpp"
 
 namespace nbtpp2
 {

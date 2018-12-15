@@ -1,9 +1,7 @@
 #ifndef NBTPP2_TAG_INT_ARRAY_HPP
 #define NBTPP2_TAG_INT_ARRAY_HPP
 
-#include <cstdint>
 #include "number_array_tag.hpp"
-#include "tag_byte_array.hpp"
 
 namespace nbtpp2
 {

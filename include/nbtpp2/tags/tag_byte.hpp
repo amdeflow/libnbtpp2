@@ -1,11 +1,6 @@
 #ifndef NBTPP2_TAG_BYTE_HPP
 #define NBTPP2_TAG_BYTE_HPP
 
-#include <cstdint>
-
-#include "nbtpp2/tag.hpp"
-#include "nbtpp2/tag_type.hpp"
-#include "nbtpp2/util.hpp"
 #include "number_tag.hpp"
 
 namespace nbtpp2

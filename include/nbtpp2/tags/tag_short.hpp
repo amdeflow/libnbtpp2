@@ -1,8 +1,6 @@
 #ifndef NBTPP2_TAG_SHORT_HPP
 #define NBTPP2_TAG_SHORT_HPP
 
-
-#include "nbtpp2/util.hpp"
 #include "number_tag.hpp"
 
 namespace nbtpp2

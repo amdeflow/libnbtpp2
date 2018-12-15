@@ -1,4 +1,5 @@
 #include "nbtpp2/tags/tag_string.hpp"
+#include "nbtpp2/util.hpp"
 
 namespace nbtpp2
 {

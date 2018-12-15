@@ -1,9 +1,10 @@
 #ifndef NBTPP2_TAG_HPP
 #define NBTPP2_TAG_HPP
 
-#include <stdexcept>
 #include "tag_type.hpp"
 #include "nbtpp2/endianness.hpp"
+
+#include <stdexcept>
 
 namespace nbtpp2
 {

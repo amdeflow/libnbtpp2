@@ -4,6 +4,8 @@
 #include <boost/iostreams/filter/gzip.hpp>
 
 #include "nbtpp2/nbt_file.hpp"
+#include "nbtpp2/util.hpp"
+#include "nbtpp2/read_tag.hpp"
 
 namespace nbtpp2
 {
