@@ -10,9 +10,9 @@ TagShort::TagShort(ValT value)
     : NumberTag{value, TagType::TagShort}
 {}
 
-TagShort *TagShort::read(std::istream &in, Endianness endianness)
+TagShort *TagShort::read(BinaryReader &reader, Endianness endianness)
 {
-    return NumberTag::read<TagShort>(in, endianness);
+    return NumberTag::read<TagShort>(reader, endianness);
 }
 
 }

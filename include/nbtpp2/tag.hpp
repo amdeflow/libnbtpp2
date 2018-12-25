@@ -1,7 +1,8 @@
 #ifndef NBTPP2_TAG_HPP
 #define NBTPP2_TAG_HPP
 
-#include "tag_type.hpp"
+#include "nbtpp2/io.hpp"
+#include "nbtpp2/tag_type.hpp"
 #include "nbtpp2/endianness.hpp"
 
 #include <stdexcept>
@@ -38,7 +39,7 @@ public:
      * @param out ostream to write the tag to
      * @param endianness Endianness to write tag to the ostream in
      */
-    virtual void write(std::ostream &out, Endianness endianness) = 0;
+    virtual void write(BinaryWriter &writer, Endianness endianness) = 0;
 
     /**
      * @brief Get the internal tag type of the tag

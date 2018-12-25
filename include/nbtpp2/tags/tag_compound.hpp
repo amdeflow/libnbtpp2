@@ -26,7 +26,7 @@ public:
      * @param out ostream to write to
      * @param endianness Endianness to write the TagCompound's contents in
      */
-    void write(std::ostream &out, Endianness endianness) override;
+    void write(BinaryWriter &writer, Endianness endianness) override;
 
     /**
      * @brief Read a TAG_Compound
@@ -34,7 +34,7 @@ public:
      * @param endianness Endianness to read the TAG_Compound's contents in
      * @return Read TagCompound
      */
-    static TagCompound *read(std::istream &in, Endianness endianness);
+    static TagCompound *read(BinaryReader &reader, Endianness endianness);
 
     /// @brief Custom destructor for deleting Tags in {@link value}
     ~TagCompound() override

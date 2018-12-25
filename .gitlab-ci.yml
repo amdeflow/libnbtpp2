@@ -3,7 +3,7 @@ image: base/devel
 build:
   stage: build
   before_script:
-    - pacman -Sy ninja cmake boost --noconfirm
+    - pacman -Sy ninja cmake --noconfirm
   script: 
     - mkdir build
     - cd build

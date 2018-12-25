@@ -10,9 +10,9 @@ TagInt::TagInt(ValT value)
     : NumberTag{value, TagType::TagInt}
 {}
 
-TagInt *TagInt::read(std::istream &in, Endianness endianness)
+TagInt *TagInt::read(BinaryReader &reader, Endianness endianness)
 {
-    return NumberTag::read<TagInt>(in, endianness);
+    return NumberTag::read<TagInt>(reader, endianness);
 }
 
 }

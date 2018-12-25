@@ -2,6 +2,7 @@
 #define NBTPP2_NBT_FILE_HPP
 
 #include "nbtpp2/tags/tag_compound.hpp"
+#include "nbtpp2/io.hpp"
 
 #include <fstream>
 #include <memory>
@@ -40,42 +41,42 @@ private:
      * @param in istream to read from
      * @param endianness Endianness to read from the istream in
      */
-    void read(std::istream &in, nbtpp2::Endianness endianness);
+    void read(BinaryReader &reader, nbtpp2::Endianness endianness);
 
     /**
      * @brief Pass istream to boost::iostreams::gzip_decompressor and call {@link read}
      * @param in istream to read from
      * @param endianness Endianness to read from the istream in
      */
-    void read_gzip(std::istream &in, nbtpp2::Endianness endianness);
+    void read_gzip(const std::string &path, nbtpp2::Endianness endianness);
 
     /**
      * @brief Pass istream to boost::iostreams::zlib_decompressor and call {@link read}
      * @param in istream to read from
      * @param endianness Endianness to read from the istream in
      */
-    void read_zlib(std::istream &in, nbtpp2::Endianness endianness);
+    void read_zlib(const std::string &path, nbtpp2::Endianness endianness);
 
     /**
      * @brief Write {@link root_name} and {@link root} to ostream
      * @param out ostream to write to
      * @param endianness endianness to write to the ostream (@p out) in
      */
-    void write(std::ostream &out, nbtpp2::Endianness endianness);
+    void write(BinaryWriter &writer, nbtpp2::Endianness endianness);
 
     /**
      * @brief Pass @p out to boost::iostreams::gzip_compressor and call {@link write}
      * @param out ostream to write to
      * @param endianness Endianness to write to the ostream (@p out) in
      */
-    void write_gzip(std::ostream &out, nbtpp2::Endianness endianness);
+    void write_gzip(const std::string &path, nbtpp2::Endianness endianness);
 
     /**
      * @brief Pass @p out to boost::iostream::zlib_compressor and call {@link write}
      * @param out ostream to write to
      * @param endianness Endianness to write to the ostream (@p out) in
      */
-    void write_zlib(std::ostream &out, nbtpp2::Endianness endianness);
+    void write_zlib(const std::string &path, nbtpp2::Endianness endianness);
 
 public:
     /// The name of the root TAG_Compound. Used for writing to a file.

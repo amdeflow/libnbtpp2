@@ -11,14 +11,14 @@ TagString::TagString(ValT value)
     : Tag{TagType::TagString}, value{std::move(value)}
 {}
 
-void TagString::write(std::ostream &out, Endianness endianness)
+void TagString::write(BinaryWriter &writer, Endianness endianness)
 {
-    write_string(value, out, endianness);
+    write_string(value, writer, endianness);
 }
 
-TagString *TagString::read(std::istream &in, Endianness endianness)
+TagString *TagString::read(BinaryReader &reader, Endianness endianness)
 {
-    return new TagString{read_string(in, endianness)};
+    return new TagString{read_string(reader, endianness)};
 }
 
 }

@@ -10,9 +10,9 @@ TagDouble::TagDouble(ValT value)
     : NumberTag{value, TagType::TagDouble}
 {}
 
-TagDouble *TagDouble::read(std::istream &in, Endianness endianness)
+TagDouble *TagDouble::read(BinaryReader &reader, Endianness endianness)
 {
-    return NumberTag::read<TagDouble>(in, endianness);
+    return NumberTag::read<TagDouble>(reader, endianness);
 }
 
 }

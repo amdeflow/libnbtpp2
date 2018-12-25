@@ -1,10 +1,11 @@
 #ifndef NBTPP2_UTIL_HPP
 #define NBTPP2_UTIL_HPP
 
-#include "converters.hpp"
-#include "endianness.hpp"
-#include "tag_type.hpp"
-#include "tag.hpp"
+#include "nbtpp2/converters.hpp"
+#include "nbtpp2/endianness.hpp"
+#include "nbtpp2/tag_type.hpp"
+#include "nbtpp2/tag.hpp"
+#include "nbtpp2/io.hpp"
 
 #include <cstdint>
 #include <ostream>
@@ -52,13 +53,18 @@ auto optional_reverse_uint(UintT value, Endianness target_endianness)
  * @param endianness Endianness to write the number in
  */
 template<typename NumberT, typename NumberTUnsigned>
-void write_number(NumberT value, std::ostream &out, Endianness endianness)
+void write_number(NumberT value, BinaryWriter &writer, Endianness endianness)
 {
     static_assert(sizeof(NumberT) == sizeof(NumberTUnsigned), "NumberT and NumberTUnsigned must have the same size");
 
-    out.write(
+    writer.write(
         ConvertToChars<NumberTUnsigned>{
-            optional_reverse_uint(Convert<NumberT, NumberTUnsigned>{value}.b, endianness)
+            optional_reverse_uint(
+                Convert<NumberT, NumberTUnsigned>{
+                    value
+                }.b,
+                endianness
+            )
         }.chars,
         sizeof(NumberTUnsigned)
     );
@@ -70,7 +76,7 @@ void write_number(NumberT value, std::ostream &out, Endianness endianness)
  * @param out ostream to write to
  * @param endianness Endianness to write the string's length in
  */
-void write_string(const std::string &str, std::ostream &out, Endianness endianness);
+void write_string(const std::string &str, BinaryWriter &writer, Endianness endianness);
 
 /**
  * @brief Read a number from an istream
@@ -81,12 +87,12 @@ void write_string(const std::string &str, std::ostream &out, Endianness endianne
  * @return Read number
  */
 template<typename NumberT, typename NumberTUnsigned>
-auto read_number(std::istream &in, Endianness endianness)
+auto read_number(BinaryReader &reader, Endianness endianness)
 {
     static_assert(sizeof(NumberT) == sizeof(NumberTUnsigned), "NumberT and NumberTUnsigned must have the same size");
 
     auto converter = ConvertToChars<NumberTUnsigned>{0};
-    in.read(converter.chars, sizeof(NumberTUnsigned));
+    reader.read(converter.chars, sizeof(NumberTUnsigned));
     auto result = Convert<NumberTUnsigned, NumberT>{
         optional_reverse_uint(
             converter.int_type,
@@ -103,21 +109,21 @@ auto read_number(std::istream &in, Endianness endianness)
  * @param endianness Endianness to read the string's length in
  * @return Read string
  */
-std::string read_string(std::istream &in, Endianness endianness);
+std::string read_string(BinaryReader &reader, Endianness endianness);
 
 /**
  * @brief Write a TagType (tag id) to an ostream
  * @param type TagType to write (tag id)
  * @param out ostream to write to
  */
-void write_tag_id(TagType type, std::ostream &out);
+void write_tag_id(TagType type, BinaryWriter &writer);
 
 /**
  * @brief Read a TagType (tag id) from an istream
  * @param in ostream to read from
  * @return Tag id (TagType)
  */
-TagType read_tag_id(std::istream &in);
+TagType read_tag_id(BinaryReader &reader);
 
 /**
  * @brief Read a tag
@@ -126,7 +132,7 @@ TagType read_tag_id(std::istream &in);
  * @param endianness Endianness to read the tag in
  * @return Resulting tag as Tag *
  */
-Tag *read_tag(TagType type, std::istream &in, Endianness endianness);
+Tag *read_tag(TagType type, BinaryReader &reader, Endianness endianness);
 
 }
 

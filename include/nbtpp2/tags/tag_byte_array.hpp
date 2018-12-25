@@ -1,7 +1,7 @@
 #ifndef NBTPP2_TAG_BYTE_ARRAY_HPP
 #define NBTPP2_TAG_BYTE_ARRAY_HPP
 
-#include "number_array_tag.hpp"
+#include "nbtpp2/number_array_tag.hpp"
 
 namespace nbtpp2
 {
@@ -23,7 +23,7 @@ public:
      * @param endianness Endianness to read TAG_Byte_Array's length in
      * @return Read TagByteArray
      */
-    static TagByteArray *read(std::istream &in, Endianness endianness);
+    static TagByteArray *read(BinaryReader &reader, Endianness endianness);
 };
 
 }

@@ -1,7 +1,7 @@
 #ifndef NBTPP2_TAG_BYTE_HPP
 #define NBTPP2_TAG_BYTE_HPP
 
-#include "number_tag.hpp"
+#include "nbtpp2/number_tag.hpp"
 
 namespace nbtpp2
 {
@@ -21,7 +21,7 @@ public:
      * @param in istream to read from
      * @return Read TagByte
      */
-    static TagByte *read(std::istream &in);
+    static TagByte *read(BinaryReader &reader);
 };
 
 }

@@ -10,9 +10,9 @@ TagIntArray::TagIntArray(ValT value)
     : NumberArrayTag{std::move(value), TagType::TagIntArray}
 {}
 
-TagIntArray *TagIntArray::read(std::istream &in, Endianness endianness)
+TagIntArray *TagIntArray::read(BinaryReader &reader, Endianness endianness)
 {
-    return NumberArrayTag::read<TagIntArray>(in, endianness);
+    return NumberArrayTag::read<TagIntArray>(reader, endianness);
 }
 
 }

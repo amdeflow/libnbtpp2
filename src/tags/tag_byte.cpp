@@ -10,9 +10,9 @@ TagByte::TagByte(ValType value)
     : NumberTag{value, TagType::TagByte}
 {}
 
-TagByte *TagByte::read(std::istream &in)
+TagByte *TagByte::read(BinaryReader &reader)
 {
-    return NumberTag::read<TagByte>(in, SYSTEM_ENDIANNESS);
+    return NumberTag::read<TagByte>(reader, SYSTEM_ENDIANNESS);
 }
 
 }

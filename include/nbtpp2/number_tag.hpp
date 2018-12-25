@@ -32,9 +32,9 @@ public:
      * @param out ostream to write to
      * @param endianness Endianness to write NumberTag in
      */
-    void write(std::ostream &out, Endianness endianness) override
+    void write(BinaryWriter &writer, Endianness endianness) override
     {
-        write_number<NumberT, NumberTUnsigned>(value, out, endianness);
+        write_number<NumberT, NumberTUnsigned>(value, writer, endianness);
     }
 
     /**
@@ -45,9 +45,9 @@ public:
      * @return The resulting NumberTag as @p ResultT
      */
     template<typename ResultT>
-    static auto read(std::istream &in, Endianness endianness)
+    static auto read(BinaryReader &reader, Endianness endianness)
     {
-        return new ResultT{read_number<NumberT, NumberTUnsigned>(in, endianness)};
+        return new ResultT{read_number<NumberT, NumberTUnsigned>(reader, endianness)};
     }
 };
 

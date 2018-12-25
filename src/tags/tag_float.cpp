@@ -10,9 +10,9 @@ TagFloat::TagFloat(ValT value)
     : NumberTag{value, TagType::TagFloat}
 {}
 
-TagFloat *TagFloat::read(std::istream &in, Endianness endianness)
+TagFloat *TagFloat::read(BinaryReader &reader, Endianness endianness)
 {
-    return NumberTag::read<TagFloat>(in, endianness);
+    return NumberTag::read<TagFloat>(reader, endianness);
 }
 
 }

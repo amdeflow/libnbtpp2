@@ -1,7 +1,7 @@
 #ifndef NBTPP2_TAG_FLOAT_HPP
 #define NBTPP2_TAG_FLOAT_HPP
 
-#include "number_tag.hpp"
+#include "nbtpp2/number_tag.hpp"
 
 namespace nbtpp2
 {
@@ -22,7 +22,7 @@ public:
      * @param endianness Endianness to read the TAG_Float in
      * @return Read TagFloat
      */
-    static TagFloat *read(std::istream &in, Endianness endianness);
+    static TagFloat *read(BinaryReader &reader, Endianness endianness);
 };
 
 }

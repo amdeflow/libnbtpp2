@@ -1,84 +1,98 @@
 #include <utility>
 #include <nbtpp2/nbt_file.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
-#include <boost/iostreams/filter/gzip.hpp>
+#include <zlib.h>
 
 #include "nbtpp2/nbt_file.hpp"
 #include "nbtpp2/util.hpp"
 #include "nbtpp2/read_tag.hpp"
 
+#if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(__CYGWIN__)
+#  include <fcntl.h>
+#  include <io.h>
+#  define SET_BINARY_MODE(file) setmode(fileno(file), O_BINARY)
+#else
+#  define SET_BINARY_MODE(file)
+#endif
+
+const unsigned int DEFLATE_LEVEL = 5;
+
 namespace nbtpp2
 {
 
-void NbtFile::read(std::istream &in, Endianness endianness)
+void NbtFile::read(BinaryReader &reader, Endianness endianness)
 {
-    auto tag_id = read_tag_id(in);
+    auto tag_id = read_tag_id(reader);
     if (tag_id != TagType::TagCompound) {
         throw std::runtime_error("root tag type must be TAG_Compound");
     }
-    root_name = read_string(in, endianness);
-    root.reset(&read_tag(tag_id, in, endianness)->as<tags::TagCompound>());
+    root_name = read_string(reader, endianness);
+    root.reset(&read_tag(tag_id, reader, endianness)->as<tags::TagCompound>());
 }
 
-void NbtFile::read_gzip(std::istream &in, Endianness endianness)
+void NbtFile::read_gzip(const std::string &path, Endianness endianness)
 {
     write_compression = Compression::Gzip;
-    boost::iostreams::filtering_istream istream{};
-    istream.push(boost::iostreams::gzip_decompressor());
-    istream.push(in);
-    read(istream, endianness);
+    auto file = gzopen(path.c_str(), "r");
+    auto reader = GzReader{file};
+    read(reader, endianness);
+    gzclose(file);
 }
 
-void NbtFile::read_zlib(std::istream &in, Endianness endianness)
+void NbtFile::read_zlib(const std::string &path, Endianness endianness)
 {
-    boost::iostreams::filtering_istream istream{};
-    istream.push(boost::iostreams::zlib_decompressor());
-    istream.push(in);
-    read(istream, endianness);
+    auto stream = z_stream{};
+    inflateInit(&stream);
+    auto reader = ZlibReader{&stream};
+    read(reader, endianness);
+    inflateEnd(&stream);
 }
 
-void NbtFile::write(std::ostream &out, Endianness endianness)
+void NbtFile::write(BinaryWriter &writer, Endianness endianness)
 {
-    write_tag_id(root->identify(), out);
-    write_string(root_name, out, endianness);
-    root->write(out, endianness);
+    write_tag_id(root->identify(), writer);
+    write_string(root_name, writer, endianness);
+    root->write(writer, endianness);
 }
 
-void NbtFile::write_gzip(std::ostream &out, Endianness endianness)
+void NbtFile::write_gzip(const std::string &path, Endianness endianness)
 {
-    boost::iostreams::filtering_ostream ostream{};
-    ostream.push(boost::iostreams::gzip_compressor());
-    ostream.push(out);
-    write(ostream, endianness);
+    auto file = gzopen(path.c_str(), "w");
+    auto writer = GzWriter{file};
+    write(writer, endianness);
+    gzclose(file);
 }
 
-void NbtFile::write_zlib(std::ostream &out, Endianness endianness)
+void NbtFile::write_zlib(const std::string &path, Endianness endianness)
 {
-    boost::iostreams::filtering_ostream ostream{};
-    ostream.push(boost::iostreams::zlib_compressor());
-    ostream.push(out);
-    write(ostream, endianness);
+    auto stream = z_stream{};
+    deflateInit(&stream, DEFLATE_LEVEL);
+    auto writer = ZlibWriter{&stream};
+    write(writer, endianness);
+    deflateEnd(&stream);
 }
 
 void NbtFile::write(const std::string &path, Endianness endianness, Compression compression)
 {
-    std::ofstream out{path};
-
     switch (compression) {
     case Compression::Detect:
         switch (write_compression) {
-        case Compression::Gzip: write_gzip(out, endianness);
+        case Compression::Gzip: write_gzip(path, endianness);
             break;
-        case Compression::Zlib: write_zlib(out, endianness);
+        case Compression::Zlib: write_zlib(path, endianness);
             break;
-        default: {};
+        default:;
         }
         break;
-    case Compression::Gzip: write_gzip(out, endianness);
+    case Compression::Gzip: write_gzip(path, endianness);
         break;
-    case Compression::Zlib: write_zlib(out, endianness);
+    case Compression::Zlib: write_zlib(path, endianness);
         break;
-    default: write(out, endianness);
+    default: {
+        auto file = fopen(path.c_str(), "w");
+        auto writer = FileWriter{file};
+        write(writer, endianness);
+        fclose(file);
+    }
     }
 }
 
@@ -86,23 +100,29 @@ NbtFile::NbtFile(const std::string &path, nbtpp2::Endianness endianness, Compres
 {
     std::ifstream stream{path, std::ios_base::binary};
     if (!stream) throw std::runtime_error("could not open file");
+    int first_byte = stream.peek();
+    stream.close();
 
     switch (compression) {
     case Compression::Detect: {
-        switch (stream.peek()) {
-        case 0x1f: read_gzip(stream, endianness);
-            break;
-        case 0x78: read_zlib(stream, endianness);
-            break;
-        default: read(stream, endianness);
+        switch (first_byte) {
+        case 0x1f: read_gzip(path, endianness);
+            return;
+        case 0x78: read_zlib(path, endianness);
+            return;
+        default:;
         }
-        break;
     }
-    case Compression::Gzip: read_gzip(stream, endianness);
-        break;
-    case Compression::Zlib: read_zlib(stream, endianness);
-        break;
-    default: read(stream, endianness);
+    case Compression::Gzip: read_gzip(path, endianness);
+        return;
+    case Compression::Zlib: read_zlib(path, endianness);
+        return;
+    default: {
+        auto file = fopen(path.c_str(), "r");
+        auto reader = FileReader{file};
+        read(reader, endianness);
+        fclose(file);
+    }
     }
 }
 

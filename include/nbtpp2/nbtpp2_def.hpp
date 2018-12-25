@@ -2,6 +2,7 @@
 #define NBTPP2_NBTPP2_DEF_HPP
 
 #include <string>
+
 namespace nbtpp2
 {
 

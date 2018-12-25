@@ -23,7 +23,7 @@ public:
      * @param out istream to Write
      * @param endianness Endianness to write the TAG_String's length in
      */
-    void write(std::ostream &out, Endianness endianness) override;
+    void write(BinaryWriter &writer, Endianness endianness) override;
 
     /**
      * @brief Read a TAG_String
@@ -31,7 +31,7 @@ public:
      * @param endianness Endianness to read the TAG_String's length in
      * @return Read TagString
      */
-    static TagString *read(std::istream &in, Endianness endianness);
+    static TagString *read(BinaryReader &reader, Endianness endianness);
 };
 
 }

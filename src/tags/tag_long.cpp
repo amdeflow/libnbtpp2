@@ -10,9 +10,9 @@ TagLong::TagLong(ValT value)
     : NumberTag{value, TagType::TagLong}
 {}
 
-TagLong *TagLong::read(std::istream &in, Endianness endianness)
+TagLong *TagLong::read(BinaryReader &reader, Endianness endianness)
 {
-    return NumberTag::read<TagLong>(in, endianness);
+    return NumberTag::read<TagLong>(reader, endianness);
 }
 
 }

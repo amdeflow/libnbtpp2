@@ -25,7 +25,7 @@ public:
      * @param out ostream to write to
      * @param endianness Endianness to write the TAG_List in
      */
-    void write(std::ostream &out, Endianness endianness) override;
+    void write(BinaryWriter &writer, Endianness endianness) override;
 
     /**
      * @brief Read a TAG_List
@@ -33,7 +33,7 @@ public:
      * @param endianness Endianness to read the TAG_List in
      * @return Read TAG_List
      */
-    static TagList *read(std::istream &in, Endianness endianness);
+    static TagList *read(BinaryReader &reader, Endianness endianness);
 
     /// @brief Custom destructor to delete tags in {@link value}
     ~TagList() override

@@ -41,11 +41,11 @@ public:
      * @param out ostream to write to
      * @param endianness Endianness to write NumberArrayTag in
      */
-    void write(std::ostream &out, Endianness endianness) override
+    void write(BinaryWriter &writer, Endianness endianness) override
     {
-        write_number<std::int32_t, std::uint32_t>(static_cast<std::int32_t>(value.size()), out, endianness);
+        write_number<std::int32_t, std::uint32_t>(static_cast<std::int32_t>(value.size()), writer, endianness);
         for (auto &elem : value) {
-            out.write(ConvertToChars<NumberT>{elem}.chars, sizeof(NumberT));
+            writer.write(ConvertToChars<NumberT>{elem}.chars, sizeof(NumberT));
         }
     }
 
@@ -57,12 +57,12 @@ public:
      * @return The resulting NumberArrayTag as @p ResultT
      */
     template<typename ResultT>
-    static auto read(std::istream &in, Endianness endianness)
+    static auto read(BinaryReader &reader, Endianness endianness)
     {
-        auto len = read_number<std::int32_t, std::uint32_t>(in, endianness);
-        auto elems = ValT();
+        auto len = read_number<std::int32_t, std::uint32_t>(reader, endianness);
+        auto elems = ValT{};
         for (std::int32_t i = 0; i < len; ++i) {
-            auto elem = read_number<NumberT, NumberTUnsigned>(in, endianness);
+            auto elem = read_number<NumberT, NumberTUnsigned>(reader, endianness);
             elems.push_back(elem);
         }
         return new ResultT{std::move(elems)};

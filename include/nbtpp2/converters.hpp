@@ -1,6 +1,8 @@
 #ifndef NBTPP2_CONVERTERS_HPP
 #define NBTPP2_CONVERTERS_HPP
 
+#include <cstdint>
+
 namespace nbtpp2
 {
 
