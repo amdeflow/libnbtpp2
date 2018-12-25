@@ -1,8 +1,8 @@
 #ifndef NBTPP2_NBT_FILE_HPP
 #define NBTPP2_NBT_FILE_HPP
 
-#include "nbtpp2/tags/tag_compound.hpp"
-#include "nbtpp2/io.hpp"
+#include <nbtpp2/tags/tag_compound.hpp>
+#include <nbtpp2/io.hpp>
 
 #include <fstream>
 #include <memory>

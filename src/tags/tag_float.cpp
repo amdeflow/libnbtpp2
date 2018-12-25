@@ -1,4 +1,4 @@
-#include "nbtpp2/tags/tag_float.hpp"
+#include <nbtpp2/tags/tag_float.hpp>
 
 namespace nbtpp2
 {

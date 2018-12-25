@@ -1,7 +1,7 @@
 #ifndef NBTPP2_TAG_DOUBLE_HPP
 #define NBTPP2_TAG_DOUBLE_HPP
 
-#include "nbtpp2/number_tag.hpp"
+#include <nbtpp2/number_tag.hpp>
 
 namespace nbtpp2
 {

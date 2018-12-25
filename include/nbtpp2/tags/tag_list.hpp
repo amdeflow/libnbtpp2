@@ -1,7 +1,7 @@
 #ifndef NBTPP2_TAG_LIST_HPP
 #define NBTPP2_TAG_LIST_HPP
 
-#include "nbtpp2/tag.hpp"
+#include <nbtpp2/tag.hpp>
 
 #include <vector>
 

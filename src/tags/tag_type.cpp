@@ -1,4 +1,4 @@
-#include "nbtpp2/tag_type.hpp"
+#include <nbtpp2/tag_type.hpp>
 
 std::string nbtpp2::tag_type_to_string(TagType tag_type)
 {

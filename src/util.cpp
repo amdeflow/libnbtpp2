@@ -1,4 +1,4 @@
-#include "nbtpp2/util.hpp"
+#include <nbtpp2/util.hpp>
 
 namespace nbtpp2
 {
@@ -13,7 +13,7 @@ std::string read_string(BinaryReader &reader, Endianness endianness)
 {
     auto len = read_number<std::uint16_t, std::uint16_t>(reader, endianness);
     auto res = std::string(len, ' ');
-    reader.read(&res[0], static_cast<std::size_t>(len));
+    reader.read(&res[0], len);
     return res;
 }
 

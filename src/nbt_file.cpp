@@ -2,9 +2,8 @@
 #include <nbtpp2/nbt_file.hpp>
 #include <zlib.h>
 
-#include "nbtpp2/nbt_file.hpp"
-#include "nbtpp2/util.hpp"
-#include "nbtpp2/read_tag.hpp"
+#include <nbtpp2/nbt_file.hpp>
+#include <nbtpp2/util.hpp>
 
 #if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(__CYGWIN__)
 #  include <fcntl.h>

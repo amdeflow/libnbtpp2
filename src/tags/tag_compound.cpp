@@ -1,5 +1,5 @@
-#include "nbtpp2/util.hpp"
-#include "nbtpp2/tags/tag_compound.hpp"
+#include <nbtpp2/util.hpp>
+#include <nbtpp2/tags/tag_compound.hpp>
 
 #include <utility>
 #include <iostream>

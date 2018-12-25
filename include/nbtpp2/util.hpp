@@ -1,11 +1,11 @@
 #ifndef NBTPP2_UTIL_HPP
 #define NBTPP2_UTIL_HPP
 
-#include "nbtpp2/converters.hpp"
-#include "nbtpp2/endianness.hpp"
-#include "nbtpp2/tag_type.hpp"
-#include "nbtpp2/tag.hpp"
-#include "nbtpp2/io.hpp"
+#include <nbtpp2/converters.hpp>
+#include <nbtpp2/endianness.hpp>
+#include <nbtpp2/tag_type.hpp>
+#include <nbtpp2/tag.hpp>
+#include <nbtpp2/io.hpp>
 
 #include <cstdint>
 #include <ostream>

@@ -1,7 +1,7 @@
 #ifndef NBTPP2_TAG_STRING_HPP
 #define NBTPP2_TAG_STRING_HPP
 
-#include "nbtpp2/tag.hpp"
+#include <nbtpp2/tag.hpp>
 
 namespace nbtpp2
 {

@@ -1,5 +1,5 @@
-#include "nbtpp2/endianness.hpp"
-#include "nbtpp2/converters.hpp"
+#include <nbtpp2/endianness.hpp>
+#include <nbtpp2/converters.hpp>
 
 namespace nbtpp2
 {

@@ -1,7 +1,7 @@
 #ifndef NBTPP2_TAG_INT_ARRAY_HPP
 #define NBTPP2_TAG_INT_ARRAY_HPP
 
-#include "nbtpp2/number_array_tag.hpp"
+#include <nbtpp2/number_array_tag.hpp>
 
 namespace nbtpp2
 {

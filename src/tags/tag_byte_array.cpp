@@ -1,4 +1,4 @@
-#include "nbtpp2/tags/tag_byte_array.hpp"
+#include <nbtpp2/tags/tag_byte_array.hpp>
 
 namespace nbtpp2
 {

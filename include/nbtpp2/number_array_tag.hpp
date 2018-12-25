@@ -1,8 +1,8 @@
 #ifndef NBTPP2_ARRAY_TAG_HPP
 #define NBTPP2_ARRAY_TAG_HPP
 
-#include "nbtpp2/tag.hpp"
-#include "nbtpp2/util.hpp"
+#include <nbtpp2/tag.hpp>
+#include <nbtpp2/util.hpp>
 
 #include <functional>
 #include <iostream>

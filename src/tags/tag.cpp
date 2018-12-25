@@ -1,4 +1,4 @@
-#include "nbtpp2/tag.hpp"
+#include <nbtpp2/tag.hpp>
 
 namespace nbtpp2
 {

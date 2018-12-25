@@ -5,7 +5,7 @@
 #include <istream>
 #include <ostream>
 #include <zlib.h>
-#include "nbtpp2/converters.hpp"
+#include <nbtpp2/converters.hpp>
 
 namespace nbtpp2
 {

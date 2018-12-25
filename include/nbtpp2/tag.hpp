@@ -1,9 +1,9 @@
 #ifndef NBTPP2_TAG_HPP
 #define NBTPP2_TAG_HPP
 
-#include "nbtpp2/io.hpp"
-#include "nbtpp2/tag_type.hpp"
-#include "nbtpp2/endianness.hpp"
+#include <nbtpp2/io.hpp>
+#include <nbtpp2/tag_type.hpp>
+#include <nbtpp2/endianness.hpp>
 
 #include <stdexcept>
 

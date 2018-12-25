@@ -1,5 +1,5 @@
-#include "nbtpp2/tags/tag_list.hpp"
-#include "nbtpp2/util.hpp"
+#include <nbtpp2/tags/tag_list.hpp>
+#include <nbtpp2/util.hpp>
 
 namespace nbtpp2
 {
