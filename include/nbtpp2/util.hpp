@@ -134,6 +134,14 @@ TagType read_tag_id(BinaryReader &reader);
  */
 Tag *read_tag(TagType type, BinaryReader &reader, Endianness endianness);
 
+/**
+ * @fn tag_type_to_string
+ * @brief Converts a TagType to the std::string representation
+ * @param tag_type The TagType
+ * @return tag_type as std::string
+ */
+std::string tag_type_to_string(TagType tag_type);
+
 }
 
 #endif //NBTPP2_UTIL_HPP

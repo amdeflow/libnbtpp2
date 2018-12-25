@@ -4,6 +4,7 @@
 
 #include <nbtpp2/nbt_file.hpp>
 #include <nbtpp2/util.hpp>
+#include <cstdio>
 
 #if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(__CYGWIN__)
 #  include <fcntl.h>
@@ -12,8 +13,6 @@
 #else
 #  define SET_BINARY_MODE(file)
 #endif
-
-const unsigned int DEFLATE_LEVEL = 5;
 
 namespace nbtpp2
 {
@@ -39,11 +38,9 @@ void NbtFile::read_gzip(const std::string &path, Endianness endianness)
 
 void NbtFile::read_zlib(const std::string &path, Endianness endianness)
 {
-    auto stream = z_stream{};
-    inflateInit(&stream);
-    auto reader = ZlibReader{&stream};
+    FILE *file = fopen(path.c_str(), "r");
+    auto reader = ZlibReader{file};
     read(reader, endianness);
-    inflateEnd(&stream);
 }
 
 void NbtFile::write(BinaryWriter &writer, Endianness endianness)

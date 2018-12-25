@@ -27,7 +27,6 @@ set(nbtpp2_SRC
         include/nbtpp2/tags/tag_string.hpp
         include/nbtpp2/tags/tag_list.hpp
         src/read_tag.cpp
-        src/tags/tag_type.cpp
         src/util.cpp
         include/nbtpp2/nbt_file.hpp
         src/nbt_file.cpp

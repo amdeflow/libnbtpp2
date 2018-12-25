@@ -1,5 +1,5 @@
-#ifndef NBTPP2_INT_TAG_HPP
-#define NBTPP2_INT_TAG_HPP
+#ifndef NBTPP2_NUMBER_TAG_HPP
+#define NBTPP2_NUMBER_TAG_HPP
 
 #include <nbtpp2/tag.hpp>
 #include <nbtpp2/util.hpp>
@@ -7,9 +7,6 @@
 #include <iostream>
 
 namespace nbtpp2
-{
-
-namespace tags
 {
 
 template<typename NumberT, typename NumberTUnsigned>
@@ -53,6 +50,4 @@ public:
 
 }
 
-}
-
-#endif //NBTPP2_INT_TAG_HPP
+#endif //NBTPP2_NUMBER_TAG_HPP

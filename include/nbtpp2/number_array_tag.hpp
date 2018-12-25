@@ -11,9 +11,6 @@
 namespace nbtpp2
 {
 
-namespace tags
-{
-
 /**
  * @brief Extendable class for reading and writing number array tags
  * @tparam NumberT Number type
@@ -68,8 +65,6 @@ public:
         return new ResultT{std::move(elems)};
     }
 };
-
-}
 
 }
 
