@@ -30,7 +30,7 @@ void NbtFile::read(BinaryReader &reader, Endianness endianness)
 void NbtFile::read_gzip(const std::string &path, Endianness endianness)
 {
     write_compression = Compression::Gzip;
-    auto file = gzopen(path.c_str(), "r");
+    auto file = gzopen(path.c_str(), "rb");
     auto reader = GzReader{file};
     read(reader, endianness);
     gzclose(file);
@@ -38,7 +38,7 @@ void NbtFile::read_gzip(const std::string &path, Endianness endianness)
 
 void NbtFile::read_zlib(const std::string &path, Endianness endianness)
 {
-    auto file = fopen(path.c_str(), "r");
+    auto file = fopen(path.c_str(), "rb");
     auto reader = ZlibReader{file};
     read(reader, endianness);
     fclose(file);
@@ -53,7 +53,7 @@ void NbtFile::write(BinaryWriter &writer, Endianness endianness)
 
 void NbtFile::write_gzip(const std::string &path, Endianness endianness)
 {
-    auto file = gzopen(path.c_str(), "w");
+    auto file = gzopen(path.c_str(), "wb");
     auto writer = GzWriter{file};
     write(writer, endianness);
     gzclose(file);
@@ -61,7 +61,7 @@ void NbtFile::write_gzip(const std::string &path, Endianness endianness)
 
 void NbtFile::write_zlib(const std::string &path, Endianness endianness)
 {
-    auto file = fopen(path.c_str(), "w");
+    auto file = fopen(path.c_str(), "wb");
     {
         auto writer = ZlibWriter{file, 9};
         write(writer, endianness);
@@ -86,7 +86,7 @@ void NbtFile::write(const std::string &path, Endianness endianness, Compression 
     case Compression::Zlib: write_zlib(path, endianness);
         break;
     default: {
-        auto file = fopen(path.c_str(), "w");
+        auto file = fopen(path.c_str(), "wb");
         auto writer = FileWriter{file};
         write(writer, endianness);
         fclose(file);
@@ -116,7 +116,7 @@ NbtFile::NbtFile(const std::string &path, nbtpp2::Endianness endianness, Compres
     case Compression::Zlib: read_zlib(path, endianness);
         return;
     default: {
-        auto file = fopen(path.c_str(), "r");
+        auto file = fopen(path.c_str(), "rb");
         auto reader = FileReader{file};
         read(reader, endianness);
         fclose(file);
