@@ -133,7 +133,8 @@ class ZlibReader: public BinaryReader
 {
     FILE *file;
     z_stream *stream = {};
-    char * buf = nullptr;
+    std::uint8_t * buf = nullptr;
+    std::size_t buf_used = 0;
 
 public:
     explicit ZlibReader(FILE *file)
@@ -143,13 +144,21 @@ public:
         auto file_size = static_cast<std::int64_t>(ftell(file));
         rewind(file);
         deflateInit(stream, DEFLATE_LEVEL);
+        stream->next_in = this->buf;
+    }
+
+    void read_buf() {
+        buf_used += fread(this->buf, sizeof(*this->buf), CHUNK - buf_used, file);
     }
 
     void read(char *buf, std::uint32_t n) override
     {
-        auto nread = fread(buf, sizeof(*buf), CHUNK, file);
-        stream->next_in = (std::uint8_t *) buf;
-        stream->total_in = n;
+        if (buf_used <= n) read_buf();
+        stream->total_in = buf_used;
+        stream->avail_in = n;
+        stream->avail_out = n;
+        stream->total_out = n;
+        stream->next_out = (std::uint8_t *) buf;
         deflate(stream, false);
     }
 
@@ -162,18 +171,54 @@ public:
 
 class ZlibWriter: public BinaryWriter
 {
-    z_stream *stream;
+    std::int32_t ret = 0;
+    std::uint32_t have = 0;
+    z_stream stream = z_stream{};
+    std::uint8_t in[CHUNK] = {0};
+    std::uint8_t out[CHUNK] = {0};
+    FILE *dest;
+
+    void write_internal(const char *buf, std::uint32_t n, bool flush) {
+        stream.avail_in = n;
+        stream.next_in = (unsigned char *) buf;
+
+        do {
+            stream.avail_out = CHUNK;
+            stream.next_out = out;
+
+            ret = deflate(&stream, flush ? Z_FINISH : Z_NO_FLUSH);
+            if (ret == Z_STREAM_ERROR) throw std::runtime_error("Error while trying to deflate");
+
+            have = CHUNK - stream.avail_out;
+            if (have == 0) continue;
+            if (fwrite(out, 1, have, dest) != have || ferror(dest)) {
+                deflateEnd(&stream);
+                throw std::runtime_error("Error writing to destination");
+            }
+        } while (stream.avail_out == 0);
+        if (stream.avail_in != 0) throw std::runtime_error("Error while trying to deflate");
+    }
 
 public:
-    explicit ZlibWriter(z_stream *stream)
-        : stream(stream)
-    {}
+    explicit ZlibWriter(FILE *dest, std::int32_t level)
+        : dest(dest)
+    {
+        stream.zalloc = Z_NULL;
+        stream.zfree = Z_NULL;
+        stream.opaque = Z_NULL;
+        ret = deflateInit(&stream, level);
+        if (ret != Z_OK)
+            throw std::runtime_error("Could not initialize deflate");
+    }
 
     void write(const char *buf, std::uint32_t n) override
     {
-        stream->next_out = (std::uint8_t *) buf;
-        stream->avail_out = n;
-        inflate(stream, false);
+        write_internal(buf, n, false);
+    }
+
+    ~ZlibWriter() {
+        write_internal(nullptr, 0, true);
+        deflateEnd(&stream);
     }
 };
 

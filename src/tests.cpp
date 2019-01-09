@@ -1,18 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "nbtpp2/tags/tag_byte.hpp"
-#include "nbtpp2/tags/tag_compound.hpp"
-#include "nbtpp2/tags/tag_short.hpp"
-#include "nbtpp2/tags/tag_int.hpp"
-#include "nbtpp2/tags/tag_long.hpp"
-#include "nbtpp2/tags/tag_float.hpp"
-#include "nbtpp2/tags/tag_double.hpp"
-#include "nbtpp2/tags/tag_byte_array.hpp"
-#include "nbtpp2/tags/tag_string.hpp"
-#include "nbtpp2/tags/tag_list.hpp"
-#include "nbtpp2/tags/tag_compound.hpp"
-#include "nbtpp2/tags/tag_int_array.hpp"
-#include "nbtpp2/tags/tag_long_array.hpp"
+#include "nbtpp2/all_tags.hpp"
 #include "nbtpp2/nbt_file.hpp"
 
 template <typename T, typename TUnsigned>
@@ -281,4 +269,16 @@ TEST_CASE("TAG_Long_Array", "[tag_long_array]")
         REQUIRE(t->value == random_array);
         delete t;
     }
+}
+
+TEST_CASE("ZLIB write", "[compression]")
+{
+    auto file = nbtpp2::NbtFile{"apples"};
+    file.get_root() = std::map<std::string, nbtpp2::Tag *>{
+        {"beer", new nbtpp2::tags::TagByte{3}},
+        {"random", new nbtpp2::tags::TagCompound{{
+            {"test", new nbtpp2::tags::TagString{"it works"}},
+        }}},
+    };
+    file.write("test.z.nbt", nbtpp2::Endianness::Big, nbtpp2::NbtFile::Compression::Zlib);
 }

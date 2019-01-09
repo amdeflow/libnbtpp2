@@ -2,7 +2,6 @@
 #define NBTPP2_TAG_TYPE_HPP
 
 #include <cstdint>
-#include <string>
 
 namespace nbtpp2
 {

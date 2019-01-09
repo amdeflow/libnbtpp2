@@ -38,9 +38,10 @@ void NbtFile::read_gzip(const std::string &path, Endianness endianness)
 
 void NbtFile::read_zlib(const std::string &path, Endianness endianness)
 {
-    FILE *file = fopen(path.c_str(), "r");
+    auto file = fopen(path.c_str(), "r");
     auto reader = ZlibReader{file};
     read(reader, endianness);
+    fclose(file);
 }
 
 void NbtFile::write(BinaryWriter &writer, Endianness endianness)
@@ -60,11 +61,12 @@ void NbtFile::write_gzip(const std::string &path, Endianness endianness)
 
 void NbtFile::write_zlib(const std::string &path, Endianness endianness)
 {
-    auto stream = z_stream{};
-    deflateInit(&stream, DEFLATE_LEVEL);
-    auto writer = ZlibWriter{&stream};
-    write(writer, endianness);
-    deflateEnd(&stream);
+    auto file = fopen(path.c_str(), "w");
+    {
+        auto writer = ZlibWriter{file, 9};
+        write(writer, endianness);
+    }
+    fclose(file);
 }
 
 void NbtFile::write(const std::string &path, Endianness endianness, Compression compression)
