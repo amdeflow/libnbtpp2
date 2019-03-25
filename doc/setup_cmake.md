@@ -2,7 +2,7 @@ Setting up nbtpp2 with CMake
 ============================
 
 ## Dependencies
-This library currently only requires zlib. On most UNIX-like systems this will already be installed, and you could use a
+This library currently only requires zlib and a working C++ compiler. On most UNIX-like systems this will already be installed, and you could use a
 package manager like vcpkg on Windows to fetch it (or just download the sources or binaries).
 
 ## Installing libnbtpp2 in your project

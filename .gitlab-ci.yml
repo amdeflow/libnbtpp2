@@ -1,9 +1,9 @@
-image: base/devel
+image: archlinux/base
 
 build:
   stage: build
   before_script:
-    - pacman -Sy ninja cmake --noconfirm
+    - pacman -Sy ninja cmake gcc --noconfirm
   script: 
     - mkdir build
     - cd build
