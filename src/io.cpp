@@ -92,7 +92,7 @@ void ZlibReader::read_buf()
 }
 
 void ZlibReader::buffer_shift_back(std::size_t amount) {
-    for (; amount > 0; amount--) {
+    while (amount-- > 0) {
         for (std::size_t i = 0; i < buf_used && i < CHUNK; i++) {
             buf[i] = buf[i+1];
         }
