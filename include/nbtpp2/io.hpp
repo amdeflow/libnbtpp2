@@ -104,9 +104,10 @@ class ZlibReader: public BinaryReader
 {
     FILE *file;
     z_stream stream = z_stream{};
-    std::uint8_t *buf = nullptr;
+    std::uint8_t buf[CHUNK] = {0};
     std::size_t buf_used = 0;
     std::size_t file_size = 0;
+    std::size_t file_read = 0;
     std::int32_t ret = 0;
 
     void buffer_shift_back(std::size_t amount);

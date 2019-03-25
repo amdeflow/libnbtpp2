@@ -72,20 +72,24 @@ ZlibReader::ZlibReader(FILE *file)
     file_size = static_cast<std::int64_t>(std::ftell(file));
     std::rewind(file);
 
-    buf = new std::uint8_t[CHUNK];
     stream.next_in = buf;
 }
 
 void ZlibReader::read_buf()
 {
     std::size_t n_possible = CHUNK;
-    if (file_size - stream.total_in < CHUNK)
-        n_possible = file_size - stream.total_in;
+    if (file_size - file_read < CHUNK)
+        n_possible = file_size - file_read;
 
     if (buf_used < n_possible) {
-        std::size_t n_to_read = n_possible - buf_used;
+        std::size_t free = (CHUNK - buf_used);
+        std::size_t n_to_read = free > n_possible ? n_possible : free;
         auto actually_read = std::fread(buf + buf_used, sizeof(char), n_to_read, file);
+        if (actually_read != n_to_read)
+            throw std::runtime_error("Could not read desired amount of bytes from file");
+
         buf_used += actually_read;
+        file_read += actually_read;
 
         stream.avail_in += actually_read;
     }
@@ -125,7 +129,6 @@ void ZlibReader::read(char *data, std::uint32_t n)
 ZlibReader::~ZlibReader()
 {
     inflateEnd(&stream);
-    delete[] buf;
 }
 
 void ZlibWriter::write_internal(const char *buf, std::uint32_t n, bool flush)
