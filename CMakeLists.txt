@@ -47,7 +47,7 @@ set(nbtpp2_SRC
         include/nbtpp2/all_tags.hpp
         include/nbtpp2/converters.hpp
         src/endianness.cpp
-        include/nbtpp2/io.hpp)
+        include/nbtpp2/io.hpp src/io.cpp)
 
 if (${NBTPP2_BUILD_STATIC})
     add_library(${PROJECT_NAME} STATIC ${nbtpp2_SRC})

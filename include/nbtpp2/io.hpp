@@ -16,13 +16,14 @@
 #endif
 
 #if defined(WIN32)
-    #define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_DEPRECATE
 #endif
 
 namespace nbtpp2
 {
 
 const unsigned int DEFLATE_LEVEL = 5;
+
 const unsigned int CHUNK = 16384;
 
 class BinaryReader
@@ -39,19 +40,14 @@ public:
     virtual void write(const char *buf, std::uint32_t n) = 0;
 };
 
-class IStreamReader: public BinaryReader
+class IstreamReader: public BinaryReader
 {
     std::istream *istream;
 
 public:
-    explicit IStreamReader(std::istream *istream)
-        : istream(istream)
-    {}
+    explicit IstreamReader(std::istream *istream);
 
-    void read(char *buf, std::uint32_t n) override
-    {
-        istream->read(buf, n);
-    }
+    void read(char *buf, std::uint32_t n) override;
 };
 
 class OstreamWriter: public BinaryWriter
@@ -59,14 +55,9 @@ class OstreamWriter: public BinaryWriter
     std::ostream *ostream;
 
 public:
-    explicit OstreamWriter(std::ostream *ostream)
-        : ostream(ostream)
-    {}
+    explicit OstreamWriter(std::ostream *ostream);
 
-    void write(const char *buf, std::uint32_t n) override
-    {
-        ostream->write(buf, n);
-    }
+    void write(const char *buf, std::uint32_t n) override;
 };
 
 class FileReader: public BinaryReader
@@ -74,14 +65,9 @@ class FileReader: public BinaryReader
     FILE *file;
 
 public:
-    explicit FileReader(FILE *file)
-        : file(file)
-    {}
+    explicit FileReader(FILE *file);
 
-    void read(char *buf, std::uint32_t n) override
-    {
-        fread(buf, sizeof(*buf), n, file);
-    }
+    void read(char *buf, std::uint32_t n) override;
 };
 
 class FileWriter: public BinaryWriter
@@ -89,14 +75,9 @@ class FileWriter: public BinaryWriter
     FILE *file;
 
 public:
-    explicit FileWriter(FILE *file)
-        : file(file)
-    {}
+    explicit FileWriter(FILE *file);
 
-    void write(const char *buf, std::uint32_t n) override
-    {
-        fwrite(buf, sizeof(*buf), n, file);
-    }
+    void write(const char *buf, std::uint32_t n) override;
 };
 
 class GzReader: public BinaryReader
@@ -104,14 +85,9 @@ class GzReader: public BinaryReader
     gzFile file;
 
 public:
-    explicit GzReader(gzFile file)
-        : file(file)
-    {}
+    explicit GzReader(gzFile file);
 
-    void read(char *buf, std::uint32_t n) override
-    {
-        gzread(file, buf, n);
-    }
+    void read(char *buf, std::uint32_t n) override;
 };
 
 class GzWriter: public BinaryWriter
@@ -119,54 +95,30 @@ class GzWriter: public BinaryWriter
     gzFile file;
 
 public:
-    explicit GzWriter(gzFile file)
-        : file(file)
-    {}
+    explicit GzWriter(gzFile file);
 
-    void write(const char *buf, std::uint32_t n) override
-    {
-        gzwrite(file, buf, n);
-    }
+    void write(const char *buf, std::uint32_t n) override;
 };
 
 class ZlibReader: public BinaryReader
 {
     FILE *file;
-    z_stream *stream = {};
-    std::uint8_t * buf = nullptr;
+    z_stream stream = z_stream{};
+    std::uint8_t *buf = nullptr;
     std::size_t buf_used = 0;
+    std::size_t file_size = 0;
+    std::int32_t ret = 0;
+
+    void buffer_shift_back(std::size_t amount);
 
 public:
-    explicit ZlibReader(FILE *file)
-        : file(file)
-    {
-        fseek(file, 0, SEEK_END);
-        auto file_size = static_cast<std::int64_t>(ftell(file));
-        rewind(file);
-        deflateInit(stream, DEFLATE_LEVEL);
-        stream->next_in = this->buf;
-    }
+    explicit ZlibReader(FILE *file);
 
-    void read_buf() {
-        buf_used += fread(this->buf, sizeof(*this->buf), CHUNK - buf_used, file);
-    }
+    void read_buf();
 
-    void read(char *buf, std::uint32_t n) override
-    {
-        if (buf_used <= n) read_buf();
-        stream->total_in = buf_used;
-        stream->avail_in = n;
-        stream->avail_out = n;
-        stream->total_out = n;
-        stream->next_out = (std::uint8_t *) buf;
-        deflate(stream, false);
-    }
+    void read(char *data, std::uint32_t n) override;
 
-    ~ZlibReader()
-    {
-        deflateEnd(stream);
-        delete buf;
-    }
+    ~ZlibReader();
 };
 
 class ZlibWriter: public BinaryWriter
@@ -178,48 +130,14 @@ class ZlibWriter: public BinaryWriter
     std::uint8_t out[CHUNK] = {0};
     FILE *dest;
 
-    void write_internal(const char *buf, std::uint32_t n, bool flush) {
-        stream.avail_in = n;
-        stream.next_in = (unsigned char *) buf;
-
-        do {
-            stream.avail_out = CHUNK;
-            stream.next_out = out;
-
-            ret = deflate(&stream, flush ? Z_FINISH : Z_NO_FLUSH);
-            if (ret == Z_STREAM_ERROR) throw std::runtime_error("Error while trying to deflate");
-
-            have = CHUNK - stream.avail_out;
-            if (have == 0) continue;
-            if (fwrite(out, 1, have, dest) != have || ferror(dest)) {
-                deflateEnd(&stream);
-                throw std::runtime_error("Error writing to destination");
-            }
-        } while (stream.avail_out == 0);
-        if (stream.avail_in != 0) throw std::runtime_error("Error while trying to deflate");
-    }
+    void write_internal(const char *buf, std::uint32_t n, bool flush);
 
 public:
-    explicit ZlibWriter(FILE *dest, std::int32_t level)
-        : dest(dest)
-    {
-        stream.zalloc = Z_NULL;
-        stream.zfree = Z_NULL;
-        stream.opaque = Z_NULL;
-        ret = deflateInit(&stream, level);
-        if (ret != Z_OK)
-            throw std::runtime_error("Could not initialize deflate");
-    }
+    explicit ZlibWriter(FILE *dest, std::int32_t level);
 
-    void write(const char *buf, std::uint32_t n) override
-    {
-        write_internal(buf, n, false);
-    }
+    void write(const char *buf, std::uint32_t n) override;
 
-    ~ZlibWriter() {
-        write_internal(nullptr, 0, true);
-        deflateEnd(&stream);
-    }
+    ~ZlibWriter();
 };
 
 }

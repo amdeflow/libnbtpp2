@@ -63,7 +63,7 @@ void NbtFile::write_zlib(const std::string &path, Endianness endianness)
 {
     auto file = fopen(path.c_str(), "wb");
     {
-        auto writer = ZlibWriter{file, 9};
+        auto writer = ZlibWriter{file, DEFLATE_LEVEL};
         write(writer, endianness);
     }
     fclose(file);

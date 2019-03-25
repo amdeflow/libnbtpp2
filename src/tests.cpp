@@ -41,7 +41,7 @@ TEST_CASE("TAG_Byte", "[tag_byte]")
     auto buf = membuf(contents, contents + sizeof(contents));
     std::istream stream(&buf);
 
-    auto r = nbtpp2::IStreamReader(&stream);
+    auto r = nbtpp2::IstreamReader(&stream);
     auto t = nbtpp2::tags::TagByte::read(r);
     REQUIRE(t->value == 32);
     delete t;
@@ -53,7 +53,7 @@ TEST_CASE("TAG_Short", "[tag_short]")
     auto buf = membuf(contents, contents + sizeof(contents));
     std::istream stream(&buf);
 
-    auto r = nbtpp2::IStreamReader(&stream);
+    auto r = nbtpp2::IstreamReader(&stream);
     auto t = nbtpp2::tags::TagShort::read(r, nbtpp2::Endianness::Big);
     REQUIRE(t->value == 8224);
     delete t;
@@ -65,7 +65,7 @@ TEST_CASE("TAG_Int", "[tag_int]")
     auto buf = membuf(contents, contents + sizeof(contents));
     std::istream stream(&buf);
 
-    auto r = nbtpp2::IStreamReader(&stream);
+    auto r = nbtpp2::IstreamReader(&stream);
     auto t = nbtpp2::tags::TagInt::read(r, nbtpp2::Endianness::Big);
     REQUIRE(t->value == 17826064);
     delete t;
@@ -77,7 +77,7 @@ TEST_CASE("TAG_Long", "[tag_long]")
     auto buf = membuf(contents, contents + sizeof(contents));
     std::istream stream(&buf);
 
-    auto r = nbtpp2::IStreamReader(&stream);
+    auto r = nbtpp2::IstreamReader(&stream);
     auto t = nbtpp2::tags::TagLong::read(r, nbtpp2::Endianness::Big);
     REQUIRE(t->value == 76562361914229008);
     delete t;
@@ -89,7 +89,7 @@ TEST_CASE("TAG_Float", "[tag_float]")
     auto buf = membuf(reinterpret_cast<char *>(contents), reinterpret_cast<char *>(contents) + sizeof(contents));
     std::istream stream(&buf);
 
-    auto r = nbtpp2::IStreamReader(&stream);
+    auto r = nbtpp2::IstreamReader(&stream);
     auto t = nbtpp2::tags::TagFloat::read(r, nbtpp2::Endianness::Big);
     REQUIRE(t->value == 280.123f);
     delete t;
@@ -101,7 +101,7 @@ TEST_CASE("TAG_Double", "[tag_double]")
     auto buf = membuf(reinterpret_cast<char *>(contents), reinterpret_cast<char *>(contents) + sizeof(contents));
     std::istream stream(&buf);
 
-    auto r = nbtpp2::IStreamReader(&stream);
+    auto r = nbtpp2::IstreamReader(&stream);
     auto t = nbtpp2::tags::TagDouble::read(r, nbtpp2::Endianness::Big);
     REQUIRE(t->value == 280.123456);
     delete t;
@@ -147,7 +147,7 @@ TEST_CASE("TAG_String", "[tag_string]")
         auto buf = membuf(random_array_bytes.data(), random_array_bytes.data() + random_array_bytes.size());
         std::istream stream{&buf};
 
-        auto r = nbtpp2::IStreamReader(&stream);
+        auto r = nbtpp2::IstreamReader(&stream);
         auto t = nbtpp2::tags::TagString::read(r, nbtpp2::Endianness::Big);
         REQUIRE(t->value == random_str);
         delete t;
@@ -163,7 +163,7 @@ TEST_CASE("TAG_Byte_Array", "[tag_byte_array]")
         auto buf = membuf(random_array_bytes.data(), random_array_bytes.data() + random_array_bytes.size());
         std::istream stream{&buf};
 
-        auto r = nbtpp2::IStreamReader(&stream);
+        auto r = nbtpp2::IstreamReader(&stream);
         auto t = nbtpp2::tags::TagByteArray::read(r, nbtpp2::Endianness::Big);
         REQUIRE(t->value == random_array);
         delete t;
@@ -193,7 +193,7 @@ TEST_CASE("TAG_List", "[tag_list]")
         auto buf = membuf(bytes.data(), bytes.data() + bytes.size());
         std::istream stream(&buf);
 
-        auto r = nbtpp2::IStreamReader(&stream);
+        auto r = nbtpp2::IstreamReader(&stream);
         auto t = nbtpp2::tags::TagList::read(r, nbtpp2::Endianness::Big);
 
         auto same = [&]()
@@ -248,7 +248,7 @@ TEST_CASE("TAG_Int_Array", "[tag_int_array]")
         auto buf = membuf(random_array_bytes.data(), random_array_bytes.data() + random_array_bytes.size());
         std::istream stream(&buf);
 
-        auto r = nbtpp2::IStreamReader(&stream);
+        auto r = nbtpp2::IstreamReader(&stream);
         auto t = nbtpp2::tags::TagIntArray::read(r, nbtpp2::Endianness::Big);
         REQUIRE(t->value == random_array);
         delete t;
@@ -264,7 +264,7 @@ TEST_CASE("TAG_Long_Array", "[tag_long_array]")
         auto buf = membuf(random_array_bytes.data(), random_array_bytes.data() + random_array_bytes.size());
         std::istream stream(&buf);
 
-        auto r = nbtpp2::IStreamReader(&stream);
+        auto r = nbtpp2::IstreamReader(&stream);
         auto t = nbtpp2::tags::TagLongArray::read(r, nbtpp2::Endianness::Big);
         REQUIRE(t->value == random_array);
         delete t;
@@ -281,4 +281,10 @@ TEST_CASE("ZLIB write", "[compression]")
         }}},
     };
     file.write("test.z.nbt", nbtpp2::Endianness::Big, nbtpp2::NbtFile::Compression::Zlib);
+}
+
+TEST_CASE("ZLIB read", "[compression]")
+{
+    auto file = nbtpp2::NbtFile{"test.z.nbt", nbtpp2::Endianness::Big, nbtpp2::NbtFile::Compression::Zlib};
+    file.write("test.unz.nbt", nbtpp2::Endianness::Big, nbtpp2::NbtFile::Compression::None);
 }
