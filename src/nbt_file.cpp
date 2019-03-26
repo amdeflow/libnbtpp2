@@ -20,11 +20,8 @@ namespace nbtpp2
 void NbtFile::read(BinaryReader &reader, Endianness endianness)
 {
     auto tag_id = read_tag_id(reader);
-    if (tag_id != TagType::TagCompound) {
-        throw std::runtime_error("root tag type must be TAG_Compound");
-    }
     root_name = read_string(reader, endianness);
-    root.reset(&read_tag(tag_id, reader, endianness)->as<tags::TagCompound>());
+    root.reset(read_tag(tag_id, reader, endianness));
 }
 
 void NbtFile::read_gzip(const std::string &path, Endianness endianness)
@@ -132,13 +129,10 @@ NbtFile::NbtFile(std::string root_name)
     : root{std::make_shared<tags::TagCompound>(tags::TagCompound({}))}, root_name{std::move(root_name)}
 {}
 
-std::map<std::string, Tag *> &NbtFile::get_root()
-{ return root->value; }
+std::map<std::string, Tag *> &NbtFile::get_root_tag_compound()
+{ return root->as<tags::TagCompound>().value; }
 
-Tag *NbtFile::traverse(std::vector<std::string> path_parts)
-{ return root->traverse(std::move(path_parts)); }
-
-tags::TagCompound &NbtFile::get_root_tag()
+Tag &NbtFile::get_root_tag()
 { return *root; }
 
 bool NbtFile::set_write_compression(Compression compression)

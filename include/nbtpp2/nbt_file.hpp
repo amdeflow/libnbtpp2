@@ -30,8 +30,8 @@ public:
         None, ///< Disables compression
     };
 private:
-    /// The root TAG_Compound tag
-    std::shared_ptr<tags::TagCompound> root;
+    /// The root tag
+    std::shared_ptr<Tag> root;
 
     /// The compression used for writing the NbtFile
     Compression write_compression = Compression::None;
@@ -116,21 +116,13 @@ public:
      * @brief Get the root TAG_Compound contents of the NbtFile
      * @return Root TAG_Compound contents of the NbtFile
      */
-    std::map<std::string, Tag *> &get_root();
+    std::map<std::string, Tag *> &get_root_tag_compound();
 
     /**
-     * @brief Get the root TAG_Compound of the NbtFile
-     * @return Root TAG_Compound contents of the NbtFile
-     * @note You should probably use {@link get_root()}
+     * @brief Get the root Tag of the NbtFile
+     * @return Root Tag of the NbtFile
      */
-    tags::TagCompound &get_root_tag();
-
-    /**
-     * @brief Traverse the root TagCompound to find tag quickly (calls {@link nbtpp2::tags::TagCompound::traverse})
-     * @param path_parts names of TagCompounds you want to traverse (last part is the tag you want as the result)
-     * @return The found tag
-     */
-    Tag *traverse(std::vector<std::string> path_parts);
+    Tag &get_root_tag();
 
     /**
      * @param compression Compression to set the NbtFile's compression to
