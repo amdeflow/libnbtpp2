@@ -229,7 +229,7 @@ TEST_CASE("TAG_Compound", "[tag_compound]")
             )},
         });
 
-        REQUIRE(f.get_root()
+        REQUIRE(f.get_root_tag_compound()
         ["byteArrayTest (the first 1000 values of (n*n*255+n*7)%100, starting with n=0 (0, 62, 34, 16, 8, ...))"]
             ->as<nbtpp2::tags::TagByteArray>().value.size() == 1000);
 
@@ -274,7 +274,7 @@ TEST_CASE("TAG_Long_Array", "[tag_long_array]")
 TEST_CASE("ZLIB write", "[compression]")
 {
     auto file = nbtpp2::NbtFile{"apples"};
-    file.get_root() = std::map<std::string, nbtpp2::Tag *>{
+    file.get_root_tag_compound() = std::map<std::string, nbtpp2::Tag *>{
         {"beer", new nbtpp2::tags::TagByte{3}},
         {"random", new nbtpp2::tags::TagCompound{{
             {"test", new nbtpp2::tags::TagString{"it works"}},
