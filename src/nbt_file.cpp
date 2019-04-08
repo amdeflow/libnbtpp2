@@ -82,12 +82,10 @@ void NbtFile::write(const std::string &path, Endianness endianness, Compression 
         break;
     case Compression::Zlib: write_zlib(path, endianness);
         break;
-    default: {
-        auto file = fopen(path.c_str(), "wb");
+    default: auto file = fopen(path.c_str(), "wb");
         auto writer = FileWriter{file};
         write(writer, endianness);
         fclose(file);
-    }
     }
 }
 
@@ -99,7 +97,11 @@ NbtFile::NbtFile(const std::string &path, nbtpp2::Endianness endianness, Compres
     stream.close();
 
     switch (compression) {
-    case Compression::Detect: {
+    case Compression::Gzip: read_gzip(path, endianness);
+        return;
+    case Compression::Zlib: read_zlib(path, endianness);
+        return;
+    case Compression::Detect:
         switch (first_byte) {
         case 0x1f: read_gzip(path, endianness);
             return;
@@ -107,17 +109,11 @@ NbtFile::NbtFile(const std::string &path, nbtpp2::Endianness endianness, Compres
             return;
         default:;
         }
-    }
-    case Compression::Gzip: read_gzip(path, endianness);
-        return;
-    case Compression::Zlib: read_zlib(path, endianness);
-        return;
-    default: {
+    default:
         auto file = fopen(path.c_str(), "rb");
         auto reader = FileReader{file};
         read(reader, endianness);
         fclose(file);
-    }
     }
 }
 
