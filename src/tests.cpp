@@ -113,7 +113,7 @@ auto random_string(std::vector<std::pair<char, char>> constraints, std::size_t l
     std::random_device generator;
     auto constraint_distribution = std::uniform_int_distribution<std::size_t>(0, constraints.size() - 1);
 
-    for (; len > 0; --len) {
+    while (len-- > 0) {
         auto picked_constraint = constraints[constraint_distribution(generator)];
         auto distribution = std::uniform_int_distribution<char>(picked_constraint.first, picked_constraint.second);
         out += distribution(generator);
@@ -131,7 +131,7 @@ auto random_t_array(std::size_t len, TUnsigned minimum)
     std::random_device generator;
     std::uniform_int_distribution<TUnsigned> distribution(minimum, t_unsigned_max);
 
-    for (; len > 0; --len) {
+    while (len-- > 0) {
         out.push_back(nbtpp2::Convert<TUnsigned, T>{distribution(generator)}.b);
     }
 
