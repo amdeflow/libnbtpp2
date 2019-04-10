@@ -23,14 +23,14 @@ public:
 
     /**
      * @brief Write a TagCompound to an ostream
-     * @param out ostream to write to
+     * @param writer BinaryWriter to write to
      * @param endianness Endianness to write the TagCompound's contents in
      */
     void write(BinaryWriter &writer, Endianness endianness) override;
 
     /**
      * @brief Read a TAG_Compound
-     * @param in istream to read from
+     * @param reader BinaryReader to read from
      * @param endianness Endianness to read the TAG_Compound's contents in
      * @return Read TagCompound
      */

@@ -35,7 +35,7 @@ public:
 
     /**
      * @brief Write NumberArrayTag
-     * @param out ostream to write to
+     * @param writer BinaryWriter to write to
      * @param endianness Endianness to write NumberArrayTag in
      */
     void write(BinaryWriter &writer, Endianness endianness) override
@@ -49,7 +49,7 @@ public:
     /**
      * @brief Read tag of type @p ResultT (extending NumberArrayTag)
      * @tparam ResultT Result tag class type
-     * @param in istream of file to read from
+     * @param reader BinaryReader to read from
      * @param endianness Endianness to read the NumberArrayTag in
      * @return The resulting NumberArrayTag as @p ResultT
      */

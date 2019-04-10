@@ -19,7 +19,7 @@ public:
 
     /**
      * @brief Read a TAG_Long_Array
-     * @param in istream to read from
+     * @param reader BinaryReader to read from
      * @param endianness Endianness to read TAG_Long_Array in
      * @return Read TagLongArray
      */

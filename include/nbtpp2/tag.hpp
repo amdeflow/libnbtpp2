@@ -36,8 +36,8 @@ public:
 
     /**
      * @brief Write tag to ostream with desired endianness
-     * @param out ostream to write the tag to
-     * @param endianness Endianness to write tag to the ostream in
+     * @param writer BinaryWriter to write the tag to
+     * @param endianness Endianness to write tag to the BinaryWriter in
      */
     virtual void write(BinaryWriter &writer, Endianness endianness) = 0;
 

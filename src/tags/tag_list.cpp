@@ -1,5 +1,6 @@
 #include <nbtpp2/tags/tag_list.hpp>
 #include <nbtpp2/util.hpp>
+#include <nbtpp2/all_tags.hpp>
 
 namespace nbtpp2
 {
@@ -45,6 +46,35 @@ TagList *TagList::read(BinaryReader &reader, Endianness endianness)
     }
 
     return new TagList(value);
+}
+
+Tag *TagList::traverse(std::vector<std::string> path_parts)
+{
+    if (!path_parts.empty()) {
+        auto idx = std::stoull(path_parts[0]);
+        if (path_parts.size() == 1) {
+            return this->value[idx];
+        }
+        switch (value[idx]->identify()) {
+        case TagType::TagCompound:
+            return value[idx]->as<TagCompound>().traverse(
+                std::vector<std::string>{
+                    path_parts.begin() + 1,
+                    path_parts.end()
+                }
+            );
+        case TagType::TagList:
+            return value[idx]->as<TagList>().traverse(
+                std::vector<std::string>{
+                    path_parts.begin() + 1,
+                    path_parts.end()
+                }
+            );
+        default:
+            throw std::runtime_error("Expected TagCompound or TagList for path part");
+        }
+    }
+    return this;
 }
 
 }

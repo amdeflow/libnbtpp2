@@ -20,14 +20,14 @@ public:
 
     /**
      * @brief Write a TAG_String
-     * @param out istream to Write
+     * @param writer BinaryWriter to write to
      * @param endianness Endianness to write the TAG_String's length in
      */
     void write(BinaryWriter &writer, Endianness endianness) override;
 
     /**
      * @brief Read a TAG_String
-     * @param in istream to read from
+     * @param reader BinaryReader to read from
      * @param endianness Endianness to read the TAG_String's length in
      * @return Read TagString
      */

@@ -18,7 +18,7 @@ public:
 
     /**
      * @brief Read a TAG_Float
-     * @param in istream to read from
+     * @param reader BinaryReader to read from
      * @param endianness Endianness to read the TAG_Float in
      * @return Read TagFloat
      */

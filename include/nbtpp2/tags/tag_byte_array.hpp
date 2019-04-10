@@ -19,7 +19,7 @@ public:
 
     /**
      * @brief Read a TAG_Byte_Array
-     * @param in istream to read from
+     * @param reader BinaryReader to read from
      * @param endianness Endianness to read TAG_Byte_Array's length in
      * @return Read TagByteArray
      */

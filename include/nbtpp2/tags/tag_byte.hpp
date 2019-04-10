@@ -18,7 +18,7 @@ public:
 
     /**
      * @brief Read a TAG_Byte
-     * @param in istream to read from
+     * @param reader BinaryReader to read from
      * @return Read TagByte
      */
     static TagByte *read(BinaryReader &reader);
