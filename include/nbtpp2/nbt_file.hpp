@@ -45,12 +45,14 @@ private:
 
     /**
      * @brief Reads gzip-compressed file
+     * @param path Path to read from
      * @param endianness Endianness to read from the istream in
      */
     void read_gzip(const std::string &path, nbtpp2::Endianness endianness);
 
     /**
      * @brief Reads zlib-compressed file
+     * @param path Path to read from
      * @param endianness Endianness to read from the istream in
      */
     void read_zlib(const std::string &path, nbtpp2::Endianness endianness);
@@ -63,13 +65,15 @@ private:
     void write(BinaryWriter &writer, nbtpp2::Endianness endianness);
 
     /**
-     * @brief Pass @p out to boost::iostreams::gzip_compressor and call {@link write}
+     * @brief Writes file as gzip-compressed NBT file
+     * @param path Path to write to
      * @param endianness Endianness to write in
      */
     void write_gzip(const std::string &path, nbtpp2::Endianness endianness);
 
     /**
-     * @brief Pass @p out to boost::iostream::zlib_compressor and call {@link write}
+     * @brief Writes file as zlib-compressed NBT file
+     * @param path Path to write to
      * @param endianness Endianness to write in
      */
     void write_zlib(const std::string &path, nbtpp2::Endianness endianness);
