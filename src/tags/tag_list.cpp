@@ -33,19 +33,20 @@ void TagList::write(BinaryWriter &writer, Endianness endianness)
 
 TagList *TagList::read(BinaryReader &reader, Endianness endianness)
 {
-    auto value = ValT{};
+    auto tl = new TagList{{}};
     auto tag_type = read_tag_id(reader);
     auto len = read_number<std::int32_t, std::uint32_t>(reader, endianness);
+    tl->value.reserve(len);
     if (len > 0) {
         if (tag_type == TagType::TagEnd) {
             throw std::runtime_error("TAG_List with size greater than 0 is not allowed to have type TAG_End");
         }
         for (std::int32_t i = 0; i < len; ++i) {
-            value.push_back(read_tag(tag_type, reader, endianness));
+            tl->value.push_back(read_tag(tag_type, reader, endianness));
         }
     }
 
-    return new TagList(value);
+    return tl;
 }
 
 Tag *TagList::traverse(std::vector<std::string> path_parts)

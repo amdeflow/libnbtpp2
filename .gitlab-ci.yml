@@ -4,7 +4,7 @@ build:
   stage: build
   before_script:
     - pacman -Sy ninja cmake gcc --noconfirm
-  script: 
+  script:
     - mkdir build
     - cd build
     - cmake .. -G Ninja -DNBTPP2_BUILD_TESTS=ON

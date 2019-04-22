@@ -27,14 +27,14 @@ void TagCompound::write(BinaryWriter &writer, Endianness endianness)
 
 TagCompound *TagCompound::read(BinaryReader &reader, Endianness endianness)
 {
-    auto value = ValT{};
+    auto tc = new TagCompound{{}};
     while (true) {
         auto id = read_tag_id(reader);
         if (id == TagType::TagEnd) break;
         auto name = read_string(reader, endianness);
-        value[name] = read_tag(id, reader, endianness);
+        tc->value[name] = read_tag(id, reader, endianness);
     }
-    return new TagCompound(value);
+    return tc;
 }
 
 Tag *TagCompound::traverse(std::vector<std::string> path_parts)

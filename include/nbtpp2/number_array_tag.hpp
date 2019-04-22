@@ -58,6 +58,7 @@ public:
     {
         auto len = read_number<std::int32_t, std::uint32_t>(reader, endianness);
         auto elems = ValT{};
+        elems.reserve(len);
         for (std::int32_t i = 0; i < len; ++i) {
             auto elem = read_number<NumberT, NumberTUnsigned>(reader, endianness);
             elems.push_back(elem);
