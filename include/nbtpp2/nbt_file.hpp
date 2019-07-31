@@ -60,7 +60,7 @@ private:
     /**
      * @brief Writes {@link root_name} and {@link root} to a BinaryWriter
      * @param writer BinaryWriter to write to
-     * @param endianness endianness to write to the ostream (@p out) in
+     * @param endianness Endianness to write to the ostream (@p out) in
      */
     void write(BinaryWriter &writer, nbtpp2::Endianness endianness);
 
@@ -115,6 +115,7 @@ public:
     /**
      * @brief Get the root TAG_Compound contents of the NbtFile
      * @return Root TAG_Compound contents of the NbtFile
+     * @throws std::runtime_error If the root tag is not a TagCompound
      */
     std::map<std::string, Tag *> &get_root_tag_compound();
 

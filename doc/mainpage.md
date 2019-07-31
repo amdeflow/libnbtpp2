@@ -12,7 +12,7 @@ using namespace nbtpp2;
 
 int main() {
     auto file = NbtFile("bigtest.nbt", Endianness::Big);
-    std::cout << file.get_root()["intTest"]->as<tags::TagInt>().value
+    std::cout << file.get_root_tag_compound()["intTest"]->as<tags::TagInt>().value
               << std::endl;
 }
 ```
